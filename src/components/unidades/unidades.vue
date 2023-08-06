@@ -99,8 +99,9 @@ import { ref } from "vue";
 import { search, modelos, categorias } from "../../helper/list";
 //import { unidades } from "../../helper/variables";
 import { required /*, contarObjeto*/ } from "../../helper/validation";
-//import crud from "../../composables/index";
-
+import crud from "../../composables/index";
+import { unidades } from "../../helper/vars";
+import { useQuasar } from "quasar";
 import { useStore } from "vuex";
 export default {
   setup() {
@@ -110,6 +111,7 @@ export default {
     const myAction = {};
     const isDisabled = ref(false),
       buttonDisabled = ref(false),
+      $q = useQuasar(),
       // store = useStore(),
       label = ref("Guardar"),
       placa = ref("");
@@ -128,9 +130,15 @@ export default {
       isDisabled.value = myAction.disabled;
     }
     const action = () => {
-      model.value;
-      store.dispatch("conecctionApiRest");
-      //  conecctionApiRest({ commit }, { url, options, urlRoute, msg }) {
+      console.log(store.getters.isAction);
+
+      let data = {};
+      Object.assign(data, model.value);
+      const { confirm } = crud();
+
+      //   action(data, myAction, unidades);
+
+      $q.notify(confirm(data, myAction, unidades));
     };
 
     return {

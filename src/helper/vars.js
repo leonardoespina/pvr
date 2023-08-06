@@ -1,8 +1,8 @@
 const method = {
-  POST: "POST",
-  GET: "GET",
-  UPDATE: "UPDATE",
-  DELETE: "DELETE",
+  POST: "post",
+  GET: "get",
+  UPDATE: "put",
+  DELETE: "delete",
 };
 const unidades = {
   endPointBase: "/api/vehiculo/",

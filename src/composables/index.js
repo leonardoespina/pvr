@@ -16,19 +16,69 @@ import store from "../store/index";
 };*/
 
 const crud = () => {
-  const create = (url, method, urlRoute) => {
-    let payLoad = {
-      url,
-      options: {
+  const action = (data, myAction, variables) => {
+    let payLoad = {};
+    if (myAction.data) {
+      let { routeEndpoint, method, routePrincipal } = myAction;
+
+      payLoad.url = routeEndpoint;
+      // payLoad.url = store.dispatch("conecctionApiRest", payLoad);
+
+      payLoad.options = {
         method,
-      },
-      urlRoute,
+        data,
+      };
+      payLoad.urlRoute = routePrincipal;
+
+      console.log(payLoad);
+
+      store.dispatch("conecctionApiRest", payLoad);
+    } else {
+      console.log(data, myAction, variables);
+      payLoad.msg = "Registro Almacenado ";
+      payLoad.url = variables.endPointBase;
+      payLoad.urlRoute = variables.routePrincipal;
+      payLoad.options = {
+        method: "POST",
+        data,
+      };
+
+      store.dispatch("conecctionApiRest", payLoad);
+    }
+  };
+
+  const confirm = (data, myAction, variables) => {
+    let objeto = {
+      message: "Esta seguro de Realizar la Accion",
+      color: "blue",
+      progress: true,
+      position: "center",
+
+      actions: [
+        {
+          label: "Proceder",
+          color: "white",
+          handler: () => {
+            action(data, myAction, variables);
+            /* ... */
+          },
+        },
+        {
+          label: "Cancelar",
+          color: "white",
+          handler: () => {
+            console.log("cancelarr");
+            /* ... */
+          },
+        },
+      ],
     };
-    store.dispatch("conecctionApiRest", payLoad);
+    return objeto;
   };
 
   return {
-    create,
+    action,
+    confirm,
   };
 };
 

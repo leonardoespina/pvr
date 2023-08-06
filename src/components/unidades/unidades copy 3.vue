@@ -85,9 +85,9 @@
           <q-btn
             size="sm"
             color="red"
-            :disable="isDisabled"
+            :disable="buttonDisabled"
             type="submit"
-            label="Enviar"
+            :label="label"
           />
         </q-card-actions>
       </q-form>
@@ -96,95 +96,68 @@
 </template>
 <script>
 import { ref } from "vue";
-import { search, listas2 } from "../../helper/list";
-import { unidades } from "../../helper/vars";
-import { required, contarObjeto } from "../../helper/validation";
-import crud from "../../composables/index";
+import { search, modelos, categorias } from "../../helper/list";
+//import { unidades } from "../../helper/variables";
+import { required /*, contarObjeto*/ } from "../../helper/validation";
+//import crud from "../../composables/index";
 
 import { useStore } from "vuex";
 export default {
   setup() {
     const model = ref([]);
+    const store = useStore();
     const myForm = ref(null);
+    const myAction = {};
+    const isDisabled = ref(false),
+      buttonDisabled = ref(false),
+      // store = useStore(),
+      label = ref("Guardar"),
+      placa = ref("");
 
-    const modelos = ref([]),
-      isDisabled = ref(false),
-      store = useStore(),
-      placa = ref(""),
-      categorias = ref([]);
-
-    let payLoad = {},
-      data = {},
-      options = {},
-      accion = {},
-      //    valorComporar = {},
-      method = null;
-    /****Buscar Placa de la Unidad */
-    //search(model.unidad, model.value);
-    /**Variables a pasar a la api */
-
-    /***CARGAR LISTA */
-    listas2(unidades.modelo).then((res) => {
-      modelos.value = res.data;
-    });
-    listas2(unidades.categoria).then((res) => {
-      categorias.value = res.data;
-    });
-    /****END */
-
-    console.log(store.getters.isAction);
-    Object.assign(accion, store.getters.isAction);
-
-    let parametro = contarObjeto(accion);
-
-    if (parametro > 0) {
-      /****editar**** */
-      isDisabled.value = accion.isDisabled;
-      let url = `${unidades.vehiculos.urlBase}${accion.id}`;
-
-      payLoad = {
-        url,
-        options: {
-          method: "GET",
-        },
-      };
-
-      listas2(payLoad).then((res) => {
-        Object.assign(model.value, res.data);
-        placa.value = model.value.placa;
-      });
-
-      Object.assign(payLoad, {
-        url,
-        urlRoute: "/unidades",
-      });
-      method = "PUT";
-    } else {
-      /******MEJORAR CON EL HELPER DE VARIABBLES */
-
-      Object.assign(payLoad, {
-        url: "/api/vehiculo/",
-        urlRoute: "/unidades",
-      });
-      method = "POST";
-
-      /*let sessionStorage = JSON.parse(localStorage.getItem("token"));
-      let { id } = sessionStorage;
-
-      newObjeto.idUser = id;
-
-      newObjeto.idEstado = 1;*/
-    }
-    const { create } = crud(); //***composable**** */
-
-    const action = () => {
-      Object.assign(data, model.value);
-      Object.assign(options, { method, data });
-      Object.assign(payLoad, { options });
-
-      create(payLoad);
-    };
     /****VARIABLE FIJA PARA EL BUSCADOR SEARCH* */
+    if (store.getters.isAction.data) {
+      Object.assign(myAction, store.getters.isAction);
+
+      model.value = myAction.data;
+      label.value = myAction.label;
+      placa.value = myAction.data.placa;
+
+      if (label.value != "Eliminar") {
+        buttonDisabled.value = myAction.disabled;
+      }
+      isDisabled.value = myAction.disabled;
+    }
+    const action = () => {
+      model.value;
+      let payLoad = {};
+      let data = {};
+      Object.assign(data, model.value);
+
+      if (store.getters.isAction.data) {
+        //conecctionApiRest({ commit }, { url, options, urlRoute, msg });
+        console.log(store.getters.isAction);
+        let { routeEndpoint, method, routePrincipal } = store.getters.isAction;
+
+        payLoad.url = routeEndpoint;
+        // payLoad.url = store.dispatch("conecctionApiRest", payLoad);
+
+        payLoad.options = {
+          method,
+          data,
+        };
+        payLoad.urlRoute = routePrincipal;
+
+        console.log(payLoad);
+
+        store.dispatch("conecctionApiRest", payLoad);
+      } else {
+        payLoad.url = "/unidades";
+
+        store.dispatch("conecctionApiRest", payLoad);
+      }
+
+      //  conecctionApiRest({ commit }, { url, options, urlRoute, msg }) {
+    };
 
     return {
       categorias,
@@ -194,8 +167,10 @@ export default {
       action,
       myForm,
       isDisabled,
+      buttonDisabled,
       required,
       placa,
+      label,
     };
   },
 };

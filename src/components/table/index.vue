@@ -83,7 +83,7 @@
               color="blue"
               :icon="'edit'"
               size="sm"
-              @click="action(props.row.id, 'UPDATE', null, 'Modificar', false)"
+              @click="action(props.row.id, 'PUT', null, 'Modificar', false)"
             >
               <q-tooltip> Modificar</q-tooltip></q-btn
             >

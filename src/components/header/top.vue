@@ -45,7 +45,7 @@ export default {
 
       console.log(store.getters.isMsg);
 
-      if (store.getters.isMsg !== null) {
+      if (store.getters.isMsg != null) {
         $q.notify(messages(store.getters.isMsg, "positive", "close", "normal"));
       }
       if (store.getters.isLoader === true) {

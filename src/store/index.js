@@ -41,9 +41,8 @@ export default createStore({
             //     commit("setConection", true);
             commit("setLoading", false);
             commit("setMsg", msg);
-            if (urlRoute) {
-              useRouter.push(urlRoute);
-            }
+            commit("setReset");
+            useRouter.push(urlRoute);
           }
         })
         .catch((error) => {
@@ -51,6 +50,8 @@ export default createStore({
           if (error.message === "canceled") {
             commit("setMsg", "Problemas de Conexion a la Api-Rest");
             commit("setLoading", false);
+            commit("setReset");
+            useRouter.push(urlRoute);
           }
         });
     },
@@ -69,6 +70,7 @@ export default createStore({
             method,
             disabled,
             routePrincipal,
+            routeEndpoint: url,
           };
           commit("setLoading", false);
           commit("setAction", payLoad);
