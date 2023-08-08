@@ -1,24 +1,24 @@
 <template>
   <div>
     <Table
-      :variables="unidades"
+      :variables="ayudantes"
       :endPoint="endPoint"
       :method="method"
-      :col="column"
+      :col="columnAyudantes"
     />
   </div>
 </template>
 <script>
 //import { ref } from "vue";
 import Table from "../../components/table/index.vue";
-import { unidades, endPoint, method } from "../../helper/vars";
-import { column } from "../table/column/index";
+import { ayudantes, endPoint, method } from "../../helper/vars";
+import { columnAyudantes } from "../table/column/index";
 export default {
   components: {
     Table,
   },
   setup() {
-    return { unidades, endPoint, method, column };
+    return { ayudantes, endPoint, method, columnAyudantes };
   },
 };
 </script>

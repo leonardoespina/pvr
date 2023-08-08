@@ -96,17 +96,17 @@
 <script>
 import { ref } from "vue";
 //import crud from "../../composables/index";
-import { column } from "../../components/table/column/index";
+//import { column } from "../../components/table/column/index";
 import { listas2 } from "../../helper/list";
 
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 export default {
   name: "Qtable",
-  props: ["variables", "endPoint", "method"],
+  props: ["variables", "endPoint", "method", "col"],
 
   setup(props) {
-    const columns = ref(column()),
+    const columns = ref(props.col()),
       rows = ref([]),
       variable = props.variables,
       endPoints = props.endPoint,

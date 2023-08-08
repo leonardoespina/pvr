@@ -2,9 +2,9 @@
   <div class="q-pa-md">
     <q-card class="my-card" flat bordered>
       <q-card-section class="bg-green text-white">
-        <q-btn color="green" :icon="'arrow_back'" size="sm" to="/unidades">
+        <q-btn color="green" :icon="'arrow_back'" size="sm" to="/rutas">
           <q-tooltip> Atras</q-tooltip></q-btn
-        >Vehiculos
+        >Rutas
       </q-card-section>
       <q-form ref="myForm" @submit.prevent="action">
         <q-card-actions>
@@ -12,16 +12,13 @@
             <div class="contenido">
               <q-input
                 type="text"
-                label="Unidad"
-                v-model="model.unidad"
-                lazy-rules
+                label="Ruta"
                 :disable="isDisabled"
-                :rules="[
-                  (val) => search(val, '/api/vehiculoPlaca/', model.unidad),
-                  required,
-                ]"
+                v-model="model.ruta"
+                lazy-rules
+                :rules="[required]"
               >
-                <!---    :rules="[(val) => myRule(val, 'leo') || 'Must be a valid email.']"     @update:model-value="verificar(requeridLetter(model.nombreCurso))"
+                <!---       @update:model-value="verificar(requeridLetter(model.nombreCurso))"
                 required-->
                 <template v-slot:prepend>
                   <q-icon name="card_membership" color="blue" />
@@ -31,50 +28,42 @@
 
             <div class="contenido">
               <q-input
-                ref="cursoRef"
                 type="text"
-                label="PLACA"
-                lazy-rules
+                label="Codigo Ruta"
                 :disable="isDisabled"
-                v-model="model.placa"
-                :rules="[
-                  (val) => search(val, '/api/vehiculoPlaca/', placa),
-                  required,
-                ]"
+                v-model="model.codRuta"
+                lazy-rules
+                :rules="[required]"
               >
                 <!---       @update:model-value="verificar(requeridLetter(model.nombreCurso))"
                 required-->
                 <template v-slot:prepend>
-                  <q-icon name="card_membership" color="blue" />
+                  <q-icon name="person_add" color="blue" />
                 </template>
               </q-input>
             </div>
             <div class="contenido">
               <q-select
+                v-model="model.idSupervisor"
+                :options="supervisores"
                 option-value="id"
-                option-label="categorias"
-                emit-value
-                v-model="model.idCategoria"
-                :options="categorias"
-                map-options
-                label="Categoria"
-                lazy-rules
+                option-label="nombreApellido"
                 :disable="isDisabled"
-                :rules="[required]"
+                emit-value
+                map-options
+                label="Supervisor de Rutas"
               />
             </div>
             <div class="contenido">
               <q-select
+                v-model="model.idSector"
+                :options="sectores"
                 option-value="id"
-                option-label="modelo"
-                v-model="model.idModelo"
-                :options="modelos"
+                option-label="sector"
+                :disable="isDisabled"
                 emit-value
                 map-options
-                label="Modelo"
-                lazy-rules
-                :disable="isDisabled"
-                :rules="[required]"
+                label="Sectores"
               />
             </div>
           </div>
@@ -96,11 +85,12 @@
 </template>
 <script>
 import { ref } from "vue";
-import { search, modelos, categorias } from "../../helper/list";
+import { search, supervisores, sectores } from "../../helper/list";
 //import { unidades } from "../../helper/variables";
 import { required /*, contarObjeto*/ } from "../../helper/validation";
-//import crud from "../../composables/index";
-
+import crud from "../../composables/index";
+import { rutas } from "../../helper/vars";
+import { useQuasar } from "quasar";
 import { useStore } from "vuex";
 export default {
   setup() {
@@ -110,17 +100,19 @@ export default {
     const myAction = {};
     const isDisabled = ref(false),
       buttonDisabled = ref(false),
+      $q = useQuasar(),
       // store = useStore(),
       label = ref("Guardar"),
-      placa = ref("");
+      ruta = ref("");
 
     /****VARIABLE FIJA PARA EL BUSCADOR SEARCH* */
+
     if (store.getters.isAction.data) {
       Object.assign(myAction, store.getters.isAction);
 
       model.value = myAction.data;
       label.value = myAction.label;
-      placa.value = myAction.data.placa;
+      ruta.value = myAction.data.ruta;
 
       if (label.value != "Eliminar") {
         buttonDisabled.value = myAction.disabled;
@@ -128,40 +120,19 @@ export default {
       isDisabled.value = myAction.disabled;
     }
     const action = () => {
-      model.value;
-      let payLoad = {};
+      console.log(store.getters.isAction);
+
       let data = {};
       Object.assign(data, model.value);
+      const { confirm } = crud();
 
-      if (store.getters.isAction.data) {
-        //conecctionApiRest({ commit }, { url, options, urlRoute, msg });
-        console.log(store.getters.isAction);
-        let { routeEndpoint, method, routePrincipal } = store.getters.isAction;
+      //   action(data, myAction, unidades);
 
-        payLoad.url = routeEndpoint;
-        // payLoad.url = store.dispatch("conecctionApiRest", payLoad);
-
-        payLoad.options = {
-          method,
-          data,
-        };
-        payLoad.urlRoute = routePrincipal;
-
-        console.log(payLoad);
-
-        store.dispatch("conecctionApiRest", payLoad);
-      } else {
-        payLoad.url = "/unidades";
-
-        store.dispatch("conecctionApiRest", payLoad);
-      }
-
-      //  conecctionApiRest({ commit }, { url, options, urlRoute, msg }) {
+      $q.notify(confirm(data, myAction, rutas));
     };
 
     return {
-      categorias,
-      modelos,
+      supervisores,
       model,
       search,
       action,
@@ -169,7 +140,8 @@ export default {
       isDisabled,
       buttonDisabled,
       required,
-      placa,
+      ruta,
+      sectores,
       label,
     };
   },

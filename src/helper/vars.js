@@ -10,6 +10,27 @@ const unidades = {
   routeAdd: "/unidadesAdd",
   routePrincipal: "/unidades",
 };
+const choferes = {
+  endPointBase: "/api/choferes/",
+  urlEndPointAll: "/api/choferes/All",
+  FindById: "/api/choferesCedula/",
+  routeAdd: "/choferesAdd",
+  routePrincipal: "/choferes",
+};
+const ayudantes = {
+  endPointBase: "/api/ayudantes/",
+  urlEndPointAll: "/api/ayudantes/All",
+  routeAdd: "/ayudanteAdd",
+  routePrincipal: "/ayudantes",
+  FindById: "/api/ayudantesCedula/",
+};
+const rutas = {
+  endPointBase: "/api/rutas/",
+  urlEndPointAll: "/api/rutas/All",
+  routeAdd: "/rutasAdd",
+  routePrincipal: "/rutas",
+  FindById: "/api/rutas/",
+};
 
 const endPoint = (url, act) => {
   return {
@@ -20,4 +41,4 @@ const endPoint = (url, act) => {
   };
 };
 
-export { unidades, endPoint, method };
+export { unidades, endPoint, method, choferes, ayudantes, rutas };

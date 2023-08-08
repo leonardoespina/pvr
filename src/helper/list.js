@@ -2,6 +2,8 @@ import apiAxios from "../axios/index";
 import { ref } from "vue";
 
 const categorias = ref([]),
+  supervisores = ref([]),
+  sectores = ref([]),
   modelos = ref([]);
 
 const listas = async (url, options) => {
@@ -35,6 +37,24 @@ listas(url, options).then((res) => {
   modelos.value = res.data;
 });
 
+url = "/api/supervisores/All";
+options = {
+  method: "POST",
+};
+
+listas(url, options).then((res) => {
+  supervisores.value = res.data;
+});
+
+url = "/api/sectores/All";
+options = {
+  method: "POST",
+};
+
+listas(url, options).then((res) => {
+  sectores.value = res.data;
+});
+
 const search = (val, urlEndPoint, comparaValor) => {
   console.log(comparaValor);
   let varBusqueda = val.toString();
@@ -56,4 +76,4 @@ const search = (val, urlEndPoint, comparaValor) => {
   }
 };
 
-export { categorias, modelos, search, listas2 };
+export { categorias, modelos, sectores, supervisores, search, listas2 };

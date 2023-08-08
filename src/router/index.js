@@ -26,6 +26,45 @@ const routes = [
 
         component: () => import("../components/unidades/unidades.vue"),
       },
+      {
+        path: "/choferes/",
+        name: "choferes",
+
+        component: () => import("../components/choferes/index.vue"),
+      },
+
+      {
+        path: "/choferesAdd",
+        name: "choferesAdd",
+
+        component: () => import("../components/choferes/choferes.vue"),
+      },
+      {
+        path: "/ayudantes/",
+        name: "ayudantes",
+
+        component: () => import("../components/ayudantes/index.vue"),
+      },
+
+      {
+        path: "/ayudanteAdd",
+        name: "ayudanteAdd",
+
+        component: () => import("../components/ayudantes/ayudantes.vue"),
+      },
+      {
+        path: "/rutas/",
+        name: "rutas",
+
+        component: () => import("../components/rutas/index.vue"),
+      },
+
+      {
+        path: "/rutasAdd",
+        name: "rutasAdd",
+
+        component: () => import("../components/rutas/rutas.vue"),
+      },
     ],
   },
   {

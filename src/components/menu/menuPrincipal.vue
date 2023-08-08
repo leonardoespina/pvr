@@ -15,10 +15,13 @@
             ><q-item clickable to="/unidades">
               <q-item-section>Unidades</q-item-section>
             </q-item>
-            <q-item clickable to="/unidades">
+            <q-item clickable to="/choferes">
               <q-item-section>Choferes</q-item-section>
             </q-item>
-            <q-item clickable to="/unidades">
+            <q-item clickable to="/ayudantes">
+              <q-item-section>Ayudantes</q-item-section>
+            </q-item>
+            <q-item clickable to="/rutas">
               <q-item-section>Rutas</q-item-section>
             </q-item></q-list
           >

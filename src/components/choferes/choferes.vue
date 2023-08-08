@@ -2,9 +2,9 @@
   <div class="q-pa-md">
     <q-card class="my-card" flat bordered>
       <q-card-section class="bg-green text-white">
-        <q-btn color="green" :icon="'arrow_back'" size="sm" to="/ayudantes">
+        <q-btn color="green" :icon="'arrow_back'" size="sm" to="/choferes">
           <q-tooltip> Atras</q-tooltip></q-btn
-        >Ayudantes
+        >Choferes
       </q-card-section>
       <q-form ref="myForm" @submit.prevent="action">
         <q-card-actions>
@@ -34,7 +34,7 @@
                 v-model="model.cedula"
                 lazy-rules
                 :rules="[
-                  (val) => search(val, '/api/ayudantesCedula/', cedula),
+                  (val) => search(val, '/api/choferesCedula/', cedula),
                   required,
                 ]"
               >
@@ -79,11 +79,11 @@
 </template>
 <script>
 import { ref } from "vue";
-import { search } from "../../helper/list";
+import { search, modelos, categorias } from "../../helper/list";
 //import { unidades } from "../../helper/variables";
 import { required /*, contarObjeto*/ } from "../../helper/validation";
 import crud from "../../composables/index";
-import { ayudantes } from "../../helper/vars";
+import { choferes } from "../../helper/vars";
 import { useQuasar } from "quasar";
 import { useStore } from "vuex";
 export default {
@@ -122,10 +122,12 @@ export default {
 
       //   action(data, myAction, unidades);
 
-      $q.notify(confirm(data, myAction, ayudantes));
+      $q.notify(confirm(data, myAction, choferes));
     };
 
     return {
+      categorias,
+      modelos,
       model,
       search,
       action,
