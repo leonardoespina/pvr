@@ -204,3 +204,108 @@ const rutas = [
 export function columnRutas() {
   return rutas;
 }
+
+const colPvr = [
+  // column Object definition
+  {
+    name: "Unidad",
+    required: true,
+    label: "Unidad",
+    align: "left",
+    field: (row) => row.unidad,
+    sortable: true,
+  },
+  {
+    name: "Numero",
+    required: true,
+    label: " # Numero de PVR",
+    align: "center",
+    field: (row) => `000-${row.id}`,
+    sortable: true,
+  },
+  {
+    name: "placa",
+    required: true,
+    label: "Placa",
+    align: "left",
+    field: (row) => row.pvr.placa,
+    sortable: true,
+  },
+  {
+    name: "chofer",
+    required: true,
+    label: "Chofer",
+    align: "left",
+    field: (row) => row.pvr.choferes,
+    sortable: true,
+  },
+  {
+    name: "Tipo de Unidad",
+    required: true,
+    label: "Tipo de Unidad",
+    align: "left",
+    field: (row) => row.pvr.tipoUnidad,
+    sortable: true,
+  },
+  {
+    name: "Operador",
+    required: true,
+    label: "Operador",
+    align: "left",
+    field: (row) => row.idUsuario,
+    sortable: true,
+  },
+  {
+    name: "Fecha de Creacion",
+    required: true,
+    label: "Fecha de Creacion",
+    align: "left",
+    field: (row) => row.fechaCreacion,
+    sortable: true,
+  },
+  {
+    name: "ESTATUS",
+    required: true,
+    label: "ESTATUS",
+    align: "left",
+    field: (row) => (row.pvrSalida === "" ? "ABIERTO " : "CERRADO"),
+    sortable: true,
+  },
+];
+
+export function columnPvr() {
+  return colPvr;
+}
+
+const colCondicion = [
+  // column Object definition
+
+  {
+    name: "Condicion",
+    required: true,
+    label: "Condicion",
+    align: "left",
+    field: (row) => row.condicion,
+    sortable: true,
+  },
+  {
+    name: "Tipo",
+    required: true,
+    label: "Tipo de Condicion",
+    align: "left",
+    field: (row) => row.listaTipoCondicion,
+
+    sortable: true,
+  },
+  {
+    name: "Observacion",
+    required: true,
+    label: "Obsevacion",
+    align: "left",
+    field: (row) => row.listaObservacion,
+    sortable: true,
+  },
+];
+export function columnCondicion() {
+  return colCondicion;
+}

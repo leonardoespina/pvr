@@ -27,6 +27,19 @@ const routes = [
         component: () => import("../components/unidades/unidades.vue"),
       },
       {
+        path: "/pvr/",
+        name: "pvr",
+
+        component: () => import("../components/pvr/index.vue"),
+      },
+
+      {
+        path: "/pvrAdd",
+        name: "pvrAdd",
+
+        component: () => import("../components/pvr/pvr.vue"),
+      },
+      {
         path: "/choferes/",
         name: "choferes",
 

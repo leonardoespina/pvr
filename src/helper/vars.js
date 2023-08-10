@@ -31,6 +31,14 @@ const rutas = {
   routePrincipal: "/rutas",
   FindById: "/api/rutas/",
 };
+const pvr = {
+  endPointBase: "/api/salidas/",
+  urlEndPointAll: "/api/salidas/All",
+  routeAdd: "/pvrAdd",
+  routePrincipal: "/pvr",
+  FindById: "/api/pvr/",
+  json: true,
+};
 
 const endPoint = (url, act) => {
   return {
@@ -41,4 +49,4 @@ const endPoint = (url, act) => {
   };
 };
 
-export { unidades, endPoint, method, choferes, ayudantes, rutas };
+export { unidades, endPoint, method, choferes, ayudantes, rutas, pvr };

@@ -118,8 +118,22 @@ export default {
     //console.log(endPoints(variable.urlEndPointAll, methods.POST));
 
     listas2(endPoints(variable.urlEndPointAll, methods.POST)).then((res) => {
-      rows.value = res.data;
+      console.log((rows.value = res.data));
+
+      if (variable.json) {
+        rows.value = rows.value.map(function (ele) {
+          return {
+            id: ele.id,
+            unidad: ele.unidad,
+            pvr: JSON.parse(ele.pvr),
+            idUsuario: ele.idUsuario,
+            fechaCreacion: ele.createdAt,
+            pvrSalida: ele.pvrSalida,
+          };
+        });
+      }
     });
+
     const action = (id, method, msg, label, disabled) => {
       if (id === null) {
         store.dispatch("resetState");

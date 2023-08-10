@@ -3,8 +3,11 @@ import { ref } from "vue";
 
 const categorias = ref([]),
   supervisores = ref([]),
+  unidades = ref([]),
   sectores = ref([]),
   modelos = ref([]);
+
+const method = "POST";
 
 const listas = async (url, options) => {
   let lista;
@@ -21,7 +24,7 @@ const listas2 = async ({ url, options }) =>
 
 let url = "/api/categoria/All",
   options = {
-    method: "POST",
+    method,
   };
 
 listas(url, options).then((res) => {
@@ -30,7 +33,7 @@ listas(url, options).then((res) => {
 
 url = "/api/modelo/All";
 options = {
-  method: "POST",
+  method,
 };
 
 listas(url, options).then((res) => {
@@ -39,7 +42,15 @@ listas(url, options).then((res) => {
 
 url = "/api/supervisores/All";
 options = {
-  method: "POST",
+  method,
+};
+
+listas(url, options).then((res) => {
+  supervisores.value = res.data;
+});
+url = "/api/supervisores/All";
+options = {
+  method,
 };
 
 listas(url, options).then((res) => {
@@ -48,7 +59,7 @@ listas(url, options).then((res) => {
 
 url = "/api/sectores/All";
 options = {
-  method: "POST",
+  method,
 };
 
 listas(url, options).then((res) => {
@@ -76,4 +87,13 @@ const search = (val, urlEndPoint, comparaValor) => {
   }
 };
 
-export { categorias, modelos, sectores, supervisores, search, listas2 };
+export {
+  categorias,
+  modelos,
+  sectores,
+  supervisores,
+  search,
+  listas2,
+  listas,
+  unidades,
+};

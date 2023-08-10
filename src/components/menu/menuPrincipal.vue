@@ -4,6 +4,9 @@
       <q-item clickable to="/">
         <q-item-section>Home</q-item-section>
       </q-item>
+      <q-item clickable to="/pvr">
+        <q-item-section>Pvr</q-item-section>
+      </q-item>
       <q-item clickable>
         <q-item-section>Configuracion</q-item-section>
         <q-item-section side>
@@ -23,8 +26,8 @@
             </q-item>
             <q-item clickable to="/rutas">
               <q-item-section>Rutas</q-item-section>
-            </q-item></q-list
-          >
+            </q-item>
+          </q-list>
         </q-menu>
       </q-item>
 

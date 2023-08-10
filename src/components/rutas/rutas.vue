@@ -32,8 +32,7 @@
                 label="Codigo Ruta"
                 :disable="isDisabled"
                 v-model="model.codRuta"
-                lazy-rules
-                :rules="[required]"
+                :rules="[(val) => search(val, '/api/rutas/', ruta), required]"
               >
                 <!---       @update:model-value="verificar(requeridLetter(model.nombreCurso))"
                 required-->
@@ -112,7 +111,7 @@ export default {
 
       model.value = myAction.data;
       label.value = myAction.label;
-      ruta.value = myAction.data.ruta;
+      ruta.value = myAction.data.codRuta;
 
       if (label.value != "Eliminar") {
         buttonDisabled.value = myAction.disabled;

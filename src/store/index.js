@@ -6,6 +6,7 @@ const initialState = () => ({
   isConection: false,
   msg: null,
   isAction: {},
+  isPvr: {},
 });
 
 export default createStore({
@@ -30,10 +31,13 @@ export default createStore({
     setAction(state, val) {
       state.isAction = val;
     },
+    setPvr(state, val) {
+      state.isPvr = val;
+    },
   },
   actions: {
     async conecctionApiRest({ commit }, { url, options, urlRoute, msg }) {
-      console.log(urlRoute);
+      console.log(msg);
       commit("setLoading", true);
       await apiAxios(url, options)
         .then((res) => {
@@ -41,7 +45,7 @@ export default createStore({
             //     commit("setConection", true);
             commit("setLoading", false);
             commit("setMsg", msg);
-            commit("setReset");
+            //     commit("setReset");
             useRouter.push(urlRoute);
           }
         })
@@ -79,6 +83,9 @@ export default createStore({
       });
 
       // commit("setAction", val);
+    },
+    pvrState({ commit }) {
+      commit("setPvr");
     },
     resetState({ commit }) {
       commit("setReset");
