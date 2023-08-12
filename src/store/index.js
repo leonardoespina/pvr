@@ -1,12 +1,33 @@
 import { createStore } from "vuex";
 import apiAxios from "../axios/index";
 import useRouter from "../router/index";
+
 const initialState = () => ({
   isLoading: false,
   isConection: false,
   msg: null,
   isAction: {},
+  isChofer: null,
+  isList: null,
   isPvr: {},
+  isStep: 1,
+  done1: false,
+  done2: false,
+  done3: false,
+  stepObj: {
+    step1: {
+      done: false,
+      step: 1,
+    },
+    step2: {
+      done: false,
+      step: 2,
+    },
+    step3: {
+      done: false,
+      step: 3,
+    },
+  },
 });
 
 export default createStore({
@@ -33,6 +54,14 @@ export default createStore({
     },
     setPvr(state, val) {
       state.isPvr = val;
+    },
+    setList(state, val) {
+      state.isList = val;
+    },
+    setMutuacion(state, { val, valor }) {
+      console.log(val, valor);
+      state[val] = valor;
+      console.log(state[val]);
     },
   },
   actions: {
@@ -90,10 +119,32 @@ export default createStore({
     resetState({ commit }) {
       commit("setReset");
     },
+    varMutuacion({ commit }, variable) {
+      commit("setMutuacion", variable);
+    },
+    async loadList({ commit }, { url, options }) {
+      console.log(url, options);
+      commit("setLoading", true);
+      await apiAxios(url, options).then((res) => {
+        if (res.statusText === "OK") {
+          //     commit("setConection", true);
+          commit("setLoading", false);
+
+          commit("setList", res.data);
+
+          //     commit("setReset");
+        }
+      });
+    },
   },
   getters: {
     isMsg: (state) => state.msg,
     isLoader: (state) => state.isLoading,
     isAction: (state) => state.isAction,
+    isList: (state) => state.isList,
+    isStep: (state) => state.isStep,
+    isDone1: (state) => state.done1,
+    isDone2: (state) => state.done2,
+    isDone3: (state) => state.done3,
   },
 });

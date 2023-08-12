@@ -1,4 +1,5 @@
 import apiAxios from "../axios/index";
+import store from "../store/index";
 import { ref } from "vue";
 
 const categorias = ref([]),
@@ -87,6 +88,19 @@ const search = (val, urlEndPoint, comparaValor) => {
   }
 };
 
+const loadList = async (url, method) => {
+  return await apiAxios(
+    url,
+    (options = {
+      method,
+    })
+  );
+
+  /*if (store.getters.isList) {
+    vehiculos.value = store.getters.isList;
+  }*/
+};
+
 export {
   categorias,
   modelos,
@@ -96,4 +110,5 @@ export {
   listas2,
   listas,
   unidades,
+  loadList,
 };

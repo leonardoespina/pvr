@@ -84,7 +84,7 @@
 </template>
 <script>
 import { ref } from "vue";
-import { search, supervisores, sectores } from "../../helper/list";
+import { search, supervisores, loadList } from "../../helper/list";
 //import { unidades } from "../../helper/variables";
 import { required /*, contarObjeto*/ } from "../../helper/validation";
 import crud from "../../composables/index";
@@ -98,6 +98,7 @@ export default {
     const myForm = ref(null);
     const myAction = {};
     const isDisabled = ref(false),
+      sectores = ref([]),
       buttonDisabled = ref(false),
       $q = useQuasar(),
       // store = useStore(),
@@ -105,6 +106,10 @@ export default {
       ruta = ref("");
 
     /****VARIABLE FIJA PARA EL BUSCADOR SEARCH* */
+
+    loadList("/api/sectores/All", "POST").then(
+      (datos) => (sectores.value = datos.data)
+    );
 
     if (store.getters.isAction.data) {
       Object.assign(myAction, store.getters.isAction);
