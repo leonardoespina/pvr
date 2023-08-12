@@ -1,7 +1,12 @@
 <template>
   <div class="q-pa-md">
-    <q-stepper v-model="step" header-nav ref="stepper" color="primary" animated>
-      <q-step :name="1" title="Datos de la Unidad" icon="settings">
+    <q-stepper v-model="step" ref="stepper" color="primary" animated>
+      <q-step
+        :name="1"
+        title="Datos de la Unidad"
+        icon="settings"
+        :done="step > 1"
+      >
         <Unidades />
       </q-step>
 
@@ -9,15 +14,21 @@
         :name="2"
         title="Chofer,Acompañantes y Rutas"
         icon="create_new_folder"
+        :done="step > 2"
       >
         <Choferes />
       </q-step>
 
-      <q-step :name="3" title="Ayudantas o Pasajeros" icon="add_comment">
+      <q-step
+        :name="3"
+        title="Ayudantas o Pasajeros"
+        icon="add_comment"
+        :done="step > 3"
+      >
         <Ayudantes />
       </q-step>
       <q-step :name="4" title="Ruta" icon="add_comment">
-        <Ayudantes />
+        <q-btn @click="guardar()" color="primary" />
       </q-step>
     </q-stepper>
   </div>
@@ -46,8 +57,13 @@ export default {
 
     console.log(store.getters.isStep);
 
+    const guardar = () => {
+      console.log(store.getters.isListAyudante);
+    };
+
     return {
       step,
+      guardar,
     };
   },
 };

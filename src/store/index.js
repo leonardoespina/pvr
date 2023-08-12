@@ -11,23 +11,7 @@ const initialState = () => ({
   isList: null,
   isPvr: {},
   isStep: 1,
-  done1: false,
-  done2: false,
-  done3: false,
-  stepObj: {
-    step1: {
-      done: false,
-      step: 1,
-    },
-    step2: {
-      done: false,
-      step: 2,
-    },
-    step3: {
-      done: false,
-      step: 3,
-    },
-  },
+  isListAyudante: [],
 });
 
 export default createStore({
@@ -122,6 +106,9 @@ export default createStore({
     varMutuacion({ commit }, variable) {
       commit("setMutuacion", variable);
     },
+    varMutuacionArray({ commit }, variable) {
+      commit("setMutuacion", variable);
+    },
     async loadList({ commit }, { url, options }) {
       console.log(url, options);
       commit("setLoading", true);
@@ -143,8 +130,6 @@ export default createStore({
     isAction: (state) => state.isAction,
     isList: (state) => state.isList,
     isStep: (state) => state.isStep,
-    isDone1: (state) => state.done1,
-    isDone2: (state) => state.done2,
-    isDone3: (state) => state.done3,
+    isListAyudante: (state) => state.isListAyudante,
   },
 });
