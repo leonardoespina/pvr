@@ -17,6 +17,7 @@
                 v-model="model.ruta"
                 lazy-rules
                 :rules="[required]"
+                autogrow
               >
                 <!---       @update:model-value="verificar(requeridLetter(model.nombreCurso))"
                 required-->
@@ -111,10 +112,14 @@ export default {
       (datos) => (sectores.value = datos.data)
     );
 
+    console.log("---------------->", store.getters.isAction.data);
+
     if (store.getters.isAction.data) {
       Object.assign(myAction, store.getters.isAction);
 
-      model.value = myAction.data;
+      console.log(myAction);
+
+      model.value = myAction.data[0];
       label.value = myAction.label;
       ruta.value = myAction.data.codRuta;
 

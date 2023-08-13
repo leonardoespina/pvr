@@ -28,7 +28,7 @@
         <Ayudantes />
       </q-step>
       <q-step :name="4" title="Ruta" icon="add_comment">
-        <q-btn @click="guardar()" color="primary" />
+        <Rutas />
       </q-step>
     </q-stepper>
   </div>
@@ -41,6 +41,7 @@ import { useStore } from "vuex";
 import Choferes from "../../components/pvr/choferes/index.vue";
 import Unidades from "../../components/pvr/unidades/index.vue";
 import Ayudantes from "../../components/pvr/ayudantes/index.vue";
+import Rutas from "../../components/pvr/rutas/index.vue";
 
 //import { useStore } from "vuex";
 
@@ -49,6 +50,7 @@ export default {
     Choferes,
     Unidades,
     Ayudantes,
+    Rutas,
   },
 
   setup() {

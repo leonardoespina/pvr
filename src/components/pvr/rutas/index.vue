@@ -9,19 +9,19 @@
       input-debounce="0"
       :options="options"
       @filter="filterFn"
-      hint="Indique Cedula"
+      hint="Indique Codigo Ruta"
       style="width: 250px; padding-bottom: 32px"
       @update:model-value="showChannel"
     />
     <q-input
-      v-model="model.nombreApellido"
+      v-model="model.ruta"
       type="text"
-      ref="nombreApellido"
-      label="Nombre"
+      label="Ruta"
       style="width: 250px"
+      autogrow
     />
     <q-input
-      v-model="model.telefono"
+      v-model="model.supervisores"
       ref="telefono"
       type="text"
       label="Telefono"
@@ -44,12 +44,11 @@
     </q-input>
   </div>
 
-  <Tabla :rows="rows" :col="col" :variable="variable" />
   <q-stepper-navigation>
-    <q-btn @click="continuar(4)" color="primary" label="Continue" />
+    <q-btn @click="continuar(5)" color="primary" label="Continue" />
     <q-btn
       flat
-      @click="continuar(2)"
+      @click="continuar(3)"
       color="primary"
       label="Back"
       class="q-ml-sm"
@@ -60,13 +59,10 @@
 import { loadList } from "../../../helper/list";
 import { ref, watchEffect } from "vue";
 
-import Tabla from "../../pvr/ayudantes/tables.vue";
 import { column } from "../../pvr/ayudantes/column";
 import { useStore } from "vuex";
 export default {
-  components: {
-    Tabla,
-  },
+  components: {},
 
   setup() {
     const stringOptions = ref([]),
@@ -79,19 +75,18 @@ export default {
       variable = "isListAyudante",
       model = ref([]);
 
-    loadList("/api/ayudantes/All", "POST").then(
+    loadList("/api/rutas/All", "POST").then(
       (datos) =>
         (stringOptions.value = datos.data.map(function (ele) {
           return {
-            value: ele.cedula,
-            label: `${ele.cedula}`,
+            value: ele.id,
+            label: `${ele.codRuta}`,
           };
         }))
     );
 
     watchEffect(() => {
       rows.value = store.getters.isListAyudante;
-      console.log(model.value);
     });
 
     const options = ref(stringOptions.value);
@@ -101,12 +96,12 @@ export default {
     };
 
     const showChannel = async (val) => {
-      await loadList(`/api/ayudantesCedula/${val.value}`, "GET").then(
-        (datos) => {
-          //  model.value = datos.data[0];
-          Object.assign(model.value, datos.data[0]);
-        }
-      );
+      await loadList(`/api/rutas/${val.value}`, "GET").then((datos) => {
+        //  model.value = datos.data[0];
+        Object.assign(model.value, datos.data[0]);
+
+        console.log(datos.data[0]);
+      });
     };
 
     const agregar = (mod) => {
