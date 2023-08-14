@@ -17,43 +17,20 @@
       v-model="model.ruta"
       type="text"
       label="Ruta"
-      style="width: 250px"
+      readonly
+      style="width: 300px"
       autogrow
     />
     <q-input
-      v-model="model.supervisores"
+      v-model="model.supervisore"
       ref="telefono"
       type="text"
+      readonly
       label="Telefono"
       style="width: 250px"
     >
-      <template v-slot:after>
-        <q-btn
-          size="15px"
-          round
-          dense
-          flat
-          color="red"
-          icon="playlist_add"
-          @click="agregar(model)"
-        />
-        <q-tooltip anchor="bottom middle" self="top middle" :offset="[10, 10]">
-          Agregar Acompañante o Ayudantes (<q-icon name="add" />)
-        </q-tooltip>
-      </template>
     </q-input>
   </div>
-
-  <q-stepper-navigation>
-    <q-btn @click="continuar(5)" color="primary" label="Continue" />
-    <q-btn
-      flat
-      @click="continuar(3)"
-      color="primary"
-      label="Back"
-      class="q-ml-sm"
-    />
-  </q-stepper-navigation>
 </template>
 <script>
 import { loadList } from "../../../helper/list";
@@ -96,12 +73,22 @@ export default {
     };
 
     const showChannel = async (val) => {
+      let objeto = {};
       await loadList(`/api/rutas/${val.value}`, "GET").then((datos) => {
         //  model.value = datos.data[0];
-        Object.assign(model.value, datos.data[0]);
+        //  Object.assign(model.value, datos.data[0]);
+        // console.log(model.value.supervisore.nombreApellido);
 
-        console.log(datos.data[0]);
+        objeto = datos.data.map(function (el) {
+          console.log(el);
+          return {
+            ruta: el.ruta,
+            supervisore: el.supervisore.nombreApellido,
+          };
+        });
       });
+
+      Object.assign(model.value, objeto[0]);
     };
 
     const agregar = (mod) => {
@@ -131,7 +118,7 @@ export default {
 
       options,
       model,
-      continuar,
+
       telefono,
       nombreApellido,
       showChannel,

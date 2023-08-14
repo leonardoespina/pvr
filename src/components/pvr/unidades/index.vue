@@ -35,13 +35,10 @@
       label="Marca"
     />
   </div>
-  <q-stepper-navigation>
-    <q-btn @click="continuar()" color="primary" label="Continue" />
-  </q-stepper-navigation>
 </template>
 <script>
 import { loadList } from "../../../helper/list";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 export default {
   setup() {
@@ -54,6 +51,11 @@ export default {
       store = useStore(),
       model = ref([]);
 
+    watchEffect(() => {
+      let variable = { val: "isUnidad", valor: model.value };
+      store.dispatch("varMutuacion", variable);
+    });
+
     loadList("/api/vehiculo/All", "POST").then(
       (datos) =>
         (stringOptions.value = datos.data.map(function (ele) {
@@ -64,18 +66,10 @@ export default {
         }))
     );
     const options = ref(stringOptions.value);
-    const showChannel = (val) => {
-      loadList(`/api/vehiculo/AllId/${val.value}`, "POST").then(
+    const showChannel = (v) => {
+      loadList(`/api/vehiculo/AllId/${v.value}`, "POST").then(
         (datos) => (model.value = datos.data[0])
       );
-    };
-
-    const continuar = () => {
-      //   done1 = true;
-
-      let step = { val: "isStep", valor: 2 };
-
-      store.dispatch("varMutuacion", step);
     };
 
     return {
@@ -93,7 +87,6 @@ export default {
       options,
       model,
       showChannel,
-      continuar,
     };
   },
 };

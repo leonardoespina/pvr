@@ -28,26 +28,21 @@
       style="width: 100px"
     />
   </div>
-  <q-stepper-navigation>
-    <q-btn @click="continuar(3)" color="primary" label="Continue" />
-    <q-btn
-      flat
-      @click="continuar(1)"
-      color="primary"
-      label="Back"
-      class="q-ml-sm"
-    />
-  </q-stepper-navigation>
 </template>
 <script>
 import { loadList } from "../../../helper/list";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 export default {
   setup() {
     const stringOptions = ref([]),
       store = useStore(),
       model = ref([]);
+
+    watchEffect(() => {
+      let variable = { val: "isChofer", valor: model.value };
+      store.dispatch("varMutuacion", variable);
+    });
 
     loadList("/api/choferes/All", "POST").then(
       (datos) =>
@@ -59,12 +54,6 @@ export default {
         }))
     );
     const options = ref(stringOptions.value);
-
-    const continuar = (v) => {
-      let variable = { val: "isStep", valor: v };
-
-      store.dispatch("varMutuacion", variable);
-    };
 
     const showChannel = (val) => {
       console.log(val);
@@ -86,7 +75,6 @@ export default {
 
       options,
       model,
-      continuar,
       showChannel,
     };
   },

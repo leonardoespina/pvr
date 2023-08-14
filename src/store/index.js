@@ -12,6 +12,10 @@ const initialState = () => ({
   isPvr: {},
   isStep: 1,
   isListAyudante: [],
+  isListCondicion: [],
+  isSalida: [],
+  isEntrada: [],
+  isUnidad: [],
 });
 
 export default createStore({
@@ -131,5 +135,9 @@ export default createStore({
     isList: (state) => state.isList,
     isStep: (state) => state.isStep,
     isListAyudante: (state) => state.isListAyudante,
+    isListCondicion: (state) => state.isListCondicion,
+    isSalida: (state) => state.isSalida,
+    isEntrada: (state) => state.isEntrada,
+    isUnidad: (state) => state.isUnidad,
   },
 });

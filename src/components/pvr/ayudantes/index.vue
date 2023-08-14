@@ -45,16 +45,6 @@
   </div>
 
   <Tabla :rows="rows" :col="col" :variable="variable" />
-  <q-stepper-navigation>
-    <q-btn @click="continuar(4)" color="primary" label="Continue" />
-    <q-btn
-      flat
-      @click="continuar(2)"
-      color="primary"
-      label="Back"
-      class="q-ml-sm"
-    />
-  </q-stepper-navigation>
 </template>
 <script>
 import { loadList } from "../../../helper/list";
