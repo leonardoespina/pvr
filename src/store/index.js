@@ -19,6 +19,8 @@ const initialState = () => ({
   isUnidad: [],
   isVariableSalida: [],
   isVariableCondicionSalida: [],
+  isVariableEntrada: [],
+  isVariableCondicionEntrada: [],
 });
 
 export default createStore({
@@ -143,6 +145,16 @@ export default createStore({
     isEntrada: (state) => state.isEntrada,
     isUnidad: (state) => state.isUnidad,
     isRuta: (state) => state.isRuta,
+    isVariableCondicionSalida: (state) => state.isVariableCondicionSalida,
+    isVariableCondicionEntrada: (state) => state.isVariableCondicionEntrada,
+    isVariableEntrada: (state) => state.isVariableEntrada,
+    isVariableSalida: (state) => state.isVariableSalida,
+
+    isGetter: (state) => (variable) => {
+      //state.isRuta,
+      return state[variable];
+    },
+
     isFuncion: (state) => () => {
       //state.isRuta,
       return {
@@ -151,6 +163,10 @@ export default createStore({
         salida: {
           varSalida: state.isVariableSalida,
           varCondicion: state.isVariableCondicionSalida,
+        },
+        entrada: {
+          varSalida: state.isVariableEntrada,
+          varCondicion: state.isVariableCondicionEntrada,
         },
       };
     },

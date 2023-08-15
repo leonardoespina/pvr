@@ -36,7 +36,7 @@
         <template v-slot:after>
           <q-btn
             size="15px"
-            @click="agregarCondicion(condicion)"
+            @click="agregar(condicion)"
             type="submit"
             round
             dense
@@ -54,7 +54,7 @@
   /></q-card-section>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 //import api from "../../composable/crud";
 
 //import { useQuasar } from "quasar";
@@ -65,6 +65,7 @@ import { ref } from "vue";
 //import { listas } from "../../helper/helper";
 import { columnCondicion } from "../../table/column/index";
 import Tabla from "../../pvr/ayudantes/tables.vue";
+import { useStore } from "vuex";
 //import api from "../../composable/crud";
 export default {
   components: {
@@ -73,11 +74,16 @@ export default {
   props: ["variable"],
 
   setup(props) {
-    const variable = props.variable;
-    const col = ref(columnCondicion()),
+    const variable = props.variable,
+      col = ref(columnCondicion()),
+      store = useStore(),
       condicion = ref([]),
       rows = ref([]),
       model = ref([]);
+
+    watchEffect(() => {
+      rows.value = store.getters[variable];
+    });
 
     let listCondiciones = [
       {
@@ -104,22 +110,32 @@ export default {
 
     let listTipoCondicion = ["Buena", "Regular", "Mala", "N/A"];
 
-    const agregarCondicion = () => {};
+    const agregar = (mod) => {
+      const resultado = rows.value.find((e) => {
+        if (e.id === mod.id) {
+          return e;
+        }
+      });
 
-    const eliminar = () => {};
+      if (resultado === undefined) {
+        rows.value.push(mod);
+
+        let vari = { val: variable, valor: rows.value };
+        store.dispatch("varMutuacion", vari);
+      }
+      model.value = [];
+    };
 
     return {
       model,
 
-      agregarCondicion,
+      agregar,
       condicion,
       variable,
       rows,
       col,
       listCondiciones,
       listTipoCondicion,
-
-      eliminar,
     };
   },
 };
