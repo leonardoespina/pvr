@@ -2,7 +2,7 @@
   <div class="q-gutter-md row items-start">
     <q-select
       filled
-      v-model="model"
+      v-model="model.codRuta"
       use-input
       hide-selected
       fill-input
@@ -10,7 +10,7 @@
       :options="options"
       @filter="filterFn"
       hint="Indique Codigo Ruta"
-      style="width: 250px; padding-bottom: 32px"
+      style="width: 150px; padding-bottom: 32px"
       @update:model-value="showChannel"
     />
     <q-input
@@ -22,19 +22,26 @@
       autogrow
     />
     <q-input
-      v-model="model.supervisore"
-      ref="telefono"
+      v-model="model.supervisor"
       type="text"
       readonly
-      label="Telefono"
-      style="width: 250px"
+      label="Supervisor"
+      style="width: 150px"
+    >
+    </q-input>
+    <q-input
+      v-model="model.sectores"
+      type="text"
+      readonly
+      label="Sector"
+      style="width: 150px"
     >
     </q-input>
   </div>
 </template>
 <script>
 import { loadList } from "../../../helper/list";
-import { ref, watchEffect } from "vue";
+import { ref } from "vue";
 
 import { column } from "../../pvr/ayudantes/column";
 import { useStore } from "vuex";
@@ -62,10 +69,6 @@ export default {
         }))
     );
 
-    watchEffect(() => {
-      rows.value = store.getters.isListAyudante;
-    });
-
     const options = ref(stringOptions.value);
     const continuar = (v) => {
       let variable = { val: "isStep", valor: v };
@@ -73,37 +76,22 @@ export default {
     };
 
     const showChannel = async (val) => {
-      let objeto = {};
       await loadList(`/api/rutas/${val.value}`, "GET").then((datos) => {
         //  model.value = datos.data[0];
         //  Object.assign(model.value, datos.data[0]);
         // console.log(model.value.supervisore.nombreApellido);
-
-        objeto = datos.data.map(function (el) {
+        /*  objeto = datos.data.map(function (el) {
           console.log(el);
           return {
             ruta: el.ruta,
-            supervisore: el.supervisore.nombreApellido,
+            nombre: el.nombreApellido,
+            sectores:
           };
-        });
-      });
-
-      Object.assign(model.value, objeto[0]);
-    };
-
-    const agregar = (mod) => {
-      const resultado = rows.value.find((e) => {
-        if (e.id === mod.id) {
-          return e;
-        }
-      });
-      if (resultado === undefined) {
-        rows.value.push(mod);
-
-        let variable = { val: "isListAyudante", valor: rows.value };
+        });*/
+        Object.assign(model.value, datos.data[0]);
+        let variable = { val: "isRuta", valor: model.value };
         store.dispatch("varMutuacion", variable);
-        model.value = [];
-      }
+      });
     };
 
     return {
@@ -124,7 +112,7 @@ export default {
       showChannel,
       col,
       rows,
-      agregar,
+
       variable,
       cedula,
     };

@@ -53,8 +53,14 @@
         <q-btn size="15px" round dense flat color="black" icon="exit" />
       </div>
 
-      <Salidas />
+      <Salidas
+        :modelVariables="'isVariableSalida'"
+        :modelCondicion="'isVariableCondicionSalida'"
+      />
+
+      "modelVariables", "modelCondicion"
     </q-card>
+    <q-btn flat @click="guardar" color="primary" label="Back" class="q-ml-sm" />
   </div>
 </template>
 
@@ -86,7 +92,9 @@ export default {
     console.log(store.getters.isStep);
 
     const guardar = () => {
-      console.log(store.getters.isListAyudante);
+      let obj = {};
+
+      Object.assign(obj, store.getters.isFuncion().chofer);
     };
 
     return {

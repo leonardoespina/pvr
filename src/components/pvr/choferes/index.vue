@@ -31,18 +31,13 @@
 </template>
 <script>
 import { loadList } from "../../../helper/list";
-import { ref, watchEffect } from "vue";
+import { ref } from "vue";
 import { useStore } from "vuex";
 export default {
   setup() {
     const stringOptions = ref([]),
       store = useStore(),
       model = ref([]);
-
-    watchEffect(() => {
-      let variable = { val: "isChofer", valor: model.value };
-      store.dispatch("varMutuacion", variable);
-    });
 
     loadList("/api/choferes/All", "POST").then(
       (datos) =>
@@ -55,12 +50,19 @@ export default {
     );
     const options = ref(stringOptions.value);
 
-    const showChannel = (val) => {
+    const showChannel = async (val) => {
       console.log(val);
 
-      loadList(`/api/choferesCedula/${val.value}`, "GET").then(
-        (datos) => (model.value = datos.data[0])
+      await loadList(`/api/choferesCedula/${val.value}`, "GET").then(
+        (datos) => {
+          model.value = datos.data[0];
+          let variable = { val: "isChofer", valor: model.value };
+          store.dispatch("varMutuacion", variable);
+        }
       );
+
+      let variable = { val: "isChofer", valor: model.value };
+      store.dispatch("varMutuacion", variable);
     };
 
     return {

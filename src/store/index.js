@@ -7,15 +7,18 @@ const initialState = () => ({
   isConection: false,
   msg: null,
   isAction: {},
-  isChofer: null,
+  isChofer: [],
   isList: null,
   isPvr: {},
   isStep: 1,
   isListAyudante: [],
   isListCondicion: [],
+  isRuta: [],
   isSalida: [],
   isEntrada: [],
   isUnidad: [],
+  isVariableSalida: [],
+  isVariableCondicionSalida: [],
 });
 
 export default createStore({
@@ -139,5 +142,17 @@ export default createStore({
     isSalida: (state) => state.isSalida,
     isEntrada: (state) => state.isEntrada,
     isUnidad: (state) => state.isUnidad,
+    isRuta: (state) => state.isRuta,
+    isFuncion: (state) => () => {
+      //state.isRuta,
+      return {
+        rutas: state.isRuta,
+        chofer: state.isChofer,
+        salida: {
+          varSalida: state.isVariableSalida,
+          varCondicion: state.isVariableCondicionSalida,
+        },
+      };
+    },
   },
 });

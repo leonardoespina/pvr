@@ -2,7 +2,7 @@
   <div class="q-gutter-md row items-start">
     <q-select
       filled
-      v-model="model"
+      v-model="model.cedula"
       use-input
       hide-selected
       fill-input
