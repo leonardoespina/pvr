@@ -52,7 +52,7 @@ export default createStore({
       state.isList = val;
     },
     setMutuacion(state, { val, valor }) {
-      console.log(val, valor);
+      console.log(`Valor:${val} -- Variable:${valor} --`);
       state[val] = valor;
       console.log(state[val]);
     },
@@ -158,15 +158,42 @@ export default createStore({
     isFuncion: (state) => () => {
       //state.isRuta,
       return {
+        unidad: state.isUnidad.unidad,
+        placa: state.isUnidad.placa,
         rutas: state.isRuta,
         chofer: state.isChofer,
+        unidad: state.isUnidad,
         salida: {
           varSalida: state.isVariableSalida,
-          varCondicion: state.isVariableCondicionSalida,
+          varCondicionSalida: state.isVariableCondicionSalida,
         },
         entrada: {
-          varSalida: state.isVariableEntrada,
-          varCondicion: state.isVariableCondicionEntrada,
+          varEntrada: state.isVariableEntrada,
+          varCondicionEntrada: state.isVariableCondicionEntrada,
+        },
+      };
+    },
+    isData: (state) => () => {
+      return {
+        unidad: state.isUnidad.unidad,
+        correlativo: Date.now(),
+        placa: state.isUnidad.placa,
+        idUsuario: "Root",
+        status: true,
+        chofer: `Cedula: ${state.isChofer.cedula} - ${state.isChofer.nombreApellido}`,
+        tipoUnidad: state.isUnidad.tipoUnidad,
+        pvr: {
+          unidades: state.isUnidad,
+          ruta: state.isRuta,
+          chofer: state.isChofer,
+          salida: {
+            varSalida: state.isVariableSalida,
+            varCondicionSalida: state.isVariableCondicionSalida,
+          },
+          entrada: {
+            varEntrada: state.isVariableEntrada,
+            varCondicionEntrada: state.isVariableCondicionEntrada,
+          },
         },
       };
     },

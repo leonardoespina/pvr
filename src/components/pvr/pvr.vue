@@ -70,22 +70,34 @@
         :modelVariables="'isVariableEntrada'"
         :modelCondicion="'isVariableCondicionEntrada'"
       />
-
-      "modelVariables", "modelCondicion"
     </q-card>
-    <q-btn flat @click="guardar" color="primary" label="Back" class="q-ml-sm" />
+    <q-card-actions vertical align="center">
+      <q-btn @click="guardar" color="primary" label="Guadar" class="q-ml-sm" />
+    </q-card-actions>
   </div>
 </template>
 
 <script>
-import { ref, computed } from "vue";
-
 import { useStore } from "vuex";
 import Salidas from "../../components/pvr/salida/index.vue";
 import Choferes from "../../components/pvr/choferes/index.vue";
 import Unidades from "../../components/pvr/unidades/index.vue";
 import Ayudantes from "../../components/pvr/ayudantes/index.vue";
 import Rutas from "../../components/pvr/rutas/index.vue";
+import crud from "../../composables/index";
+import { pvr } from "../../helper/vars";
+import { useQuasar } from "quasar";
+
+/*
+// Alternativa 1: Pasar a JSON
+variable = JSON.parse(JSON.stringify(variable))
+
+// Alternativa 2: Crear una copia usando el operador spread
+variable = { ...variable }
+
+// Alternativa 3: Crear una copia usando Object.assign
+variable = Object.assign({}, variable)
+*/
 
 //import { useStore } from "vuex";
 
@@ -100,20 +112,36 @@ export default {
 
   setup() {
     const store = useStore(),
-      step = computed(() => store.getters.isStep);
+      $q = useQuasar(),
+      myAction = {};
 
-    console.log(store.getters.isStep);
+    const guardar = async () => {
+      let data = {};
+      // obj = {};
 
-    const guardar = () => {
-      let obj = {};
+      data = { ...store.getters.isData() };
 
-      Object.assign(obj, store.getters.isFuncion());
+      /* let { unidad } = data;
 
-      console.log(obj);
+      data = {
+        unidad,
+        pvr: data,
+        idUsuario: "root",
+        correlativo: Date.now(),
+      };*/
+
+      console.log(data);
+
+      const { confirm } = crud();
+
+      //   action(data, myAction, unidades);
+
+      $q.notify(confirm(data, myAction, pvr));
+
+      //console.log(store.getters.isFuncion());
     };
 
     return {
-      step,
       guardar,
     };
   },

@@ -125,10 +125,12 @@ export default {
           return {
             id: ele.id,
             unidad: ele.unidad,
-            pvr: JSON.parse(ele.pvr),
+            correlativo: ele.correlativo,
+            placa: ele.placa,
+            chofer: ele.chofer,
             idUsuario: ele.idUsuario,
             fechaCreacion: ele.createdAt,
-            pvrSalida: ele.pvrSalida,
+            tipoUnidad: ele.tipoUnidad,
           };
         });
       }

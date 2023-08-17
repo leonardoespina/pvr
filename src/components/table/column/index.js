@@ -220,7 +220,7 @@ const colPvr = [
     required: true,
     label: " # Numero de PVR",
     align: "center",
-    field: (row) => `000-${row.id}`,
+    field: (row) => row.correlativo,
     sortable: true,
   },
   {
@@ -228,7 +228,7 @@ const colPvr = [
     required: true,
     label: "Placa",
     align: "left",
-    field: (row) => row.pvr.placa,
+    field: (row) => row.placa,
     sortable: true,
   },
   {
@@ -236,7 +236,7 @@ const colPvr = [
     required: true,
     label: "Chofer",
     align: "left",
-    field: (row) => row.pvr.choferes,
+    field: (row) => row.chofer,
     sortable: true,
   },
   {
@@ -244,7 +244,7 @@ const colPvr = [
     required: true,
     label: "Tipo de Unidad",
     align: "left",
-    field: (row) => row.pvr.tipoUnidad,
+    field: (row) => row.tipoUnidad,
     sortable: true,
   },
   {

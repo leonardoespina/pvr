@@ -70,10 +70,6 @@ export default {
     );
 
     const options = ref(stringOptions.value);
-    const continuar = (v) => {
-      let variable = { val: "isStep", valor: v };
-      store.dispatch("varMutuacion", variable);
-    };
 
     const showChannel = async (val) => {
       await loadList(`/api/rutas/${val.value}`, "GET").then((datos) => {
@@ -88,8 +84,12 @@ export default {
             sectores:
           };
         });*/
-        Object.assign(model.value, datos.data[0]);
-        let variable = { val: "isRuta", valor: model.value };
+        model.value = datos.data[0];
+        let obj = {};
+
+        obj = { ...model.value };
+
+        let variable = { val: "isRuta", valor: obj };
         store.dispatch("varMutuacion", variable);
       });
     };

@@ -5,26 +5,26 @@
       style="width: 100px"
       type="number"
       label="Combustible"
-      @update:model-value="save(model)"
+      @update:model-value="save"
     />
     <q-input
       v-model="model.kilometraje"
       type="number"
       label="Kilometraje"
-      @update:model-value="save(model)"
+      @update:model-value="save"
       style="width: 100px"
     >
     </q-input>
     <q-input
       v-model="model.fecha"
-      @update:model-value="save(model)"
+      @update:model-value="save"
       type="date"
       hint="Fecha"
       style="width: 100px"
     />
     <q-input
       v-model="model.hora"
-      @update:model-value="save(model)"
+      @update:model-value="save"
       type="time"
       hint="Hora"
     />
@@ -49,8 +49,14 @@ export default {
     let value = props.modelVariables;
     let valueCondicion = props.modelCondicion;
 
-    const save = (model) => {
-      let variable = { val: value, valor: model };
+    const save = () => {
+      let obj = {};
+
+      obj = { ...model.value };
+
+      console.log(obj);
+
+      let variable = { val: value, valor: obj };
       store.dispatch("varMutuacion", variable);
     };
 
