@@ -79,11 +79,23 @@ export default {
 
     const showChannel = async (val) => {
       await loadList(`/api/rutas/${val.value}`, "GET").then((datos) => {
+        //  model.value = datos.data[0];
+        //  Object.assign(model.value, datos.data[0]);
+        // console.log(model.value.supervisore.nombreApellido);
+        /*  objeto = datos.data.map(function (el) {
+          console.log(el);
+          return {
+            ruta: el.ruta,
+            nombre: el.nombreApellido,
+            sectores:
+          };
+        });*/
+
         Object.assign(model.value, datos.data[0]);
+        /*   model.value = datos.data[0];
+        let obj = {};
 
-        /*   let variable = { isRuta: model.value };
-
-        store.dispatch("varMutuacionArray", variable);*/
+        obj = { ...model.value };*/
 
         let variable = { val: "isRuta", valor: model.value };
         store.dispatch("varMutuacion", variable);

@@ -72,15 +72,8 @@ export default {
         (datos) => {
           //  model.value = datos.data[0];
           Object.assign(model.value, datos.data[0]);
-          //   let variable = { val: "isUnidad", valor: model.value };
-
-          //  let variable = { isUnidad: model.value };
-
-          //      store.dispatch("varMutuacionArray", variable);
-
-          let row = { val: "isUnidad", valor: model.value };
-
-          store.dispatch("varMutuacion", row);
+          let variable = { val: "isUnidad", valor: model.value };
+          store.dispatch("varMutuacion", variable);
         }
       );
     };

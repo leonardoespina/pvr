@@ -10,7 +10,6 @@ const initialState = () => ({
   isChofer: [],
   isList: null,
   isPvr: {},
-  isPvrS: [],
   isStep: 1,
   isListAyudante: [],
   isListCondicion: [],
@@ -56,14 +55,6 @@ export default createStore({
       console.log(`Valor:${val} -- Variable:${valor} --`);
       state[val] = valor;
       console.log(state[val]);
-    },
-    setMutuacionObjeto(state, valor) {
-      //state[val].push(valor);
-
-      // valor;
-      //  val;
-
-      console.log(state.isPvrS.push(valor));
     },
   },
   actions: {
@@ -124,9 +115,9 @@ export default createStore({
     varMutuacion({ commit }, variable) {
       commit("setMutuacion", variable);
     },
-
-    guardarPvr() {},
-
+    varMutuacionArray({ commit }, variable) {
+      commit("setMutuacion", variable);
+    },
     async loadList({ commit }, { url, options }) {
       console.log(url, options);
       commit("setLoading", true);
@@ -164,7 +155,7 @@ export default createStore({
       return state[variable];
     },
 
-    /*  isFuncion: (state) => () => {
+    isFuncion: (state) => () => {
       //state.isRuta,
       return {
         unidad: state.isUnidad.unidad,
@@ -181,20 +172,8 @@ export default createStore({
           varCondicionEntrada: state.isVariableCondicionEntrada,
         },
       };
-    },*/
+    },
     isData: (state) => () => {
-      let pvr = {
-        isListAyudante: state.isListAyudante,
-        isUnidad: state.isUnidad,
-        isRuta: state.isRuta,
-        isChofer: state.isChofer,
-        varSalida: state.isVariableSalida,
-        varCondicionSalida: state.isVariableCondicionSalida,
-        varCondicionEntrada: state.isVariableCondicionEntrada,
-        varEntrada: state.isVariableEntrada,
-      };
-      pvr = JSON.stringify(pvr);
-
       return {
         unidad: state.isUnidad.unidad,
         correlativo: Date.now(),
@@ -203,7 +182,21 @@ export default createStore({
         status: true,
         chofer: `Cedula: ${state.isChofer.cedula} - ${state.isChofer.nombreApellido}`,
         tipoUnidad: state.isUnidad.tipoUnidad,
-        pvr,
+
+        pvr: {
+          ayudantes: state.isListAyudante,
+          unidades: state.isUnidad,
+          ruta: state.isRuta,
+          chofer: state.isChofer,
+          salida: {
+            varSalida: state.isVariableSalida,
+            varCondicionSalida: state.isVariableCondicionSalida,
+          },
+          entrada: {
+            varEntrada: state.isVariableEntrada,
+            varCondicionEntrada: state.isVariableCondicionEntrada,
+          },
+        },
       };
     },
   },

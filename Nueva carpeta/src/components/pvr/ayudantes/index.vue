@@ -86,7 +86,7 @@ export default {
     );
 
     watchEffect(() => {
-      rows.value = store.getters.isGetter("isListAyudante");
+      rows.value = store.getters.isListAyudante;
     });
 
     const options = ref(stringOptions.value);
@@ -116,9 +116,6 @@ export default {
 
         let variable = { val: "isListAyudante", valor: rows.value };
         store.dispatch("varMutuacion", variable);
-        /*   let variable = { isListAyudante: rows.value };
-
-        store.dispatch("varMutuacionArray", variable);*/
         model.value = [];
       }
     };

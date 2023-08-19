@@ -67,10 +67,6 @@ export default {
 
           let variable = { val: "isChofer", valor: model.value };
           store.dispatch("varMutuacion", variable);
-
-          //   let variable = { isChofer: model.value };
-
-          //store.dispatch("varMutuacionArray", variable);
         }
       );
 

@@ -98,7 +98,7 @@ variable = Object.assign({}, variable)
 */
 
 //import { useStore } from "vuex";
-//import { ref } from "vue";
+import { ref } from "vue";
 
 export default {
   components: {
@@ -116,56 +116,80 @@ export default {
       myAction = {};
 
     if (store.getters.isAction.data) {
-      Object.assign(myAction, store.getters.isAction);
-      let objs = { ...store.getters.isAction.data };
-      let { pvr } = objs;
+      let obj = { ...store.getters.isAction.data };
+      let { pvr } = obj;
       pvr = JSON.parse(pvr);
+      let {
+        unidades,
+        chofer,
+        ayudantes,
+        ruta,
+        salida,
+        entrada,
+        varCondicionSalida,
+      } = pvr;
+      console.log(chofer);
 
-      Object.entries(pvr).forEach(([val, valor]) => {
-        store.dispatch("varMutuacion", { val, valor });
-      });
+      let unidad = { val: "isUnidad", valor: unidades };
+      store.dispatch("varMutuacion", unidad);
+
+      let chofers = { val: "isChofer", valor: chofer };
+      store.dispatch("varMutuacion", chofers);
+
+      let ayudante = { val: "isListAyudante", valor: ayudantes };
+      store.dispatch("varMutuacion", ayudante);
+
+      let rutas = { val: "isRuta", valor: ruta };
+      store.dispatch("varMutuacion", rutas);
+
+      varCondicionSalida;
+
+      //isVariableCondicionSalida: [],
+
+      //   varSalida;
+
+      console.log(salida.varSalida);
+
+      let varSalida = {
+        val: "isVariableSalida",
+        valor: salida.varSalida,
+      };
+      store.dispatch("varMutuacion", varSalida);
+
+      let varCondicionSalidas = {
+        val: "isVariableCondicionSalida",
+        valor: salida.varCondicionSalida,
+      };
+      store.dispatch("varMutuacion", varCondicionSalidas);
+
+      let varCondicionEntradas = {
+        val: "isVariableCondicionEntrada",
+        valor: entrada.varCondicionEntrada,
+      };
+      store.dispatch("varMutuacion", varCondicionEntradas);
+
+      let varEntrada = {
+        val: "isVariableEntrada",
+        valor: entrada.varEntrada,
+      };
+      store.dispatch("varMutuacion", varEntrada);
     }
 
-    const guardar = () => {
+    const guardar = async () => {
+      let data = {};
+      // obj = {};
+
+      data = { ...store.getters.isData() };
+
+      console.log(data);
+
       const { confirm } = crud();
-      /*     let obj = {};
 
-      let data = store.getters.isGetter("isPvrS");
-      let isUnidad = store.getters.isGetter("isUnidad");
-      let isVariableSalida = store.getters.isGetter("isVariableSalida");
-      let isVariableEntrada = store.getters.isGetter("isVariableEntrada");
-      let isVariableCondicionSalida = store.getters.isGetter(
-        "isVariableCondicionSalida"
-      );
-      let isVariableCondicionEntrada = store.getters.isGetter(
-        "isVariableCondicionSalida"
-      );
-      Object.values(data).forEach((value) => {
-        Object.assign(obj, value);
-      });
+      //   action(data, myAction, unidades);
 
-      Object.assign(
-        obj,
-        { status: true },
-        { idUsuario: "root" },
-        { isVariableSalida, isVariableCondicionSalida },
-        { isVariableEntrada, isVariableCondicionEntrada }
-      );
+      $q.notify(confirm(data, myAction, pvr));
 
-      console.log(obj);
-
-      $q.notify(confirm(obj, myAction, pvr));*/
-      // console.log(store.getters.isGetter("isUnidad"));
-      // console.log(store.getters.isGetter("isChofer"));
-      //console.log(store.getters.isGetter("isListAyudante"));
-      //console.log(store.getters.isGetter("isRuta"));
-      //console.log(store.getters.isGetter("isRuta"));
-      // console.log(store.getters.isGetter("isVariableSalida"));
-      //console.log(store.getters.isGetter("isVariableCondicionSalida"));
-
-      console.log(store.getters.isData());
-
-      $q.notify(confirm(store.getters.isData(), myAction, pvr));
+      //console.log(store.getters.isFuncion());
     };
 
     return {
