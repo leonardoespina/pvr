@@ -66,8 +66,8 @@ import { ref, watchEffect } from "vue";
 import { columnCondicion } from "../../table/column/index";
 import Tabla from "../../pvr/salida/tables.vue";
 import { useStore } from "vuex";
-import { listaCondiciones } from "../../../helper/list.js";
 //import api from "../../composable/crud";
+
 export default {
   components: {
     Tabla,
@@ -80,19 +80,34 @@ export default {
       store = useStore(),
       condicion = ref([]),
       rows = ref([]),
-      listCondiciones = ref([]),
       model = ref([]);
-
-    let tipoUnidad;
-    //   let tipoUnidad = store.getters.isGetter("isUnidad").tipoUnidad;
 
     watchEffect(() => {
       rows.value = store.getters[variable];
-
-      tipoUnidad = store.getters.isGetter("isUnidad").tipoUnidad;
-
-      listCondiciones.value = listaCondiciones(tipoUnidad);
     });
+
+    let listCondiciones = [
+      {
+        id: 1,
+        condicion: "Cauchos #1",
+      },
+      {
+        id: 2,
+        condicion: "Cauchos #2",
+      },
+      {
+        id: 3,
+        condicion: "Cauchos #3",
+      },
+      {
+        id: 4,
+        condicion: "Cauchos #4",
+      },
+      {
+        id: 5,
+        condicion: "Carroceria",
+      },
+    ];
 
     let listTipoCondicion = ["Buena", "Regular", "Mala", "N/A"];
 

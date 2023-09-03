@@ -4,9 +4,9 @@
       <q-card>
         <q-card-section class="bg-green text-white">
           <div class="text-h6">
-            Registro de Planilla de Prevencion Vehicular
+            Registro de Planilla de Prevencion Vehicular **SALIDA***
           </div>
-          <q-btn color="green" :icon="'arrow_back'" size="sm" to="/pvr">
+          <q-btn color="green" :icon="'arrow_back'" size="sm" to="/salida">
             <q-tooltip> Atras</q-tooltip></q-btn
           >
         </q-card-section>
@@ -66,27 +66,13 @@
         />
       </q-card>
 
-      <q-card>
-        <div class="text-subtitle2">
-          <b>Entrada</b>
-          <q-btn size="15px" round dense flat color="black" icon="exit" />
-        </div>
-        <div v-if="visibleEntrada">
-          <Salidas
-            :modelVariables="'isVariableEntrada'"
-            :modelCondicion="'isVariableCondicionEntrada'"
-            :validacion="validaEntrada"
-          />
-        </div>
-      </q-card>
-
       <q-card-actions vertical align="center">
         <q-btn
           size="sm"
           color="red"
-          :disable="buttonDisabled"
           type="submit"
           :label="label"
+          :disable="buttonDisabled"
         />
       </q-card-actions>
     </q-form>
@@ -95,15 +81,17 @@
 
 <script>
 import { useStore } from "vuex";
-import { ref, provide } from "vue";
-import Salidas from "../../components/pvr/salida/index.vue";
-import Choferes from "../../components/pvr/choferes/index.vue";
-import Unidades from "../../components/pvr/unidades/index.vue";
-import Ayudantes from "../../components/pvr/ayudantes/index.vue";
-import Rutas from "../../components/pvr/rutas/index.vue";
-import crud from "../../composables/index";
-import { pvr } from "../../helper/vars";
+import { ref } from "vue";
+import Salidas from "../../pvr/salida/salida.vue";
+import Choferes from "../../pvr/choferes/index.vue";
+import Unidades from "../../pvr/unidades/index.vue";
+import Ayudantes from "../../pvr/ayudantes/index.vue";
+import Rutas from "../../pvr/rutas/index.vue";
+import crud from "../../../composables/index";
+import { Salida } from "../../../helper/vars";
+import { loadList } from "../../../helper/list";
 import { useQuasar } from "quasar";
+import { useRouter } from "vue-router";
 
 /*
 // Alternativa 1: Pasar a JSON
@@ -133,11 +121,14 @@ export default {
       $q = useQuasar(),
       isDisabled = ref(false),
       label = ref("Guardar"),
+      router = useRouter(),
+      unidades = ref(false),
       buttonDisabled = ref(false),
-      visibleEntrada = ref(false),
-      validaEntrada = ref(false),
       //model = ref([]),
       myAction = {};
+
+    let val = "status",
+      valor = true;
 
     if (store.getters.isAction.data) {
       Object.assign(myAction, store.getters.isAction);
@@ -154,30 +145,37 @@ export default {
         store.dispatch("varMutuacion", { val, valor });
       });
     }
-    provide("disables", isDisabled.value);
-    const guardar = () => {
-      let pvrCondicion = JSON.parse(store.getters.isData().pvr);
 
-      const { confirm } = crud();
+    const guardar = async () => {
+      let unidad = store.getters.isGetter("isUnidad").unidad;
+      if (!store.getters.isAction.data) {
+        await loadList(`/api/salidas/pvrStatus/${unidad}`, "GET").then(
+          (res) => {
+            unidades.value = res.data;
+          }
+        );
+      }
 
-      /*
-      varCondicionEntrada
-      varCondicionSalida
-
-
-       isVariableCondicionSalida: (state) => state.isVariableCondicionSalida,
-    isVariableCondicionEntrada: (state) => state.isVariableCondicionEntrada,
-    isVariableEntrada: (state) => state.isVariableEntrada,
-    isVariableSalida: (state) => state.isVariableSalida,
-      */
-
-      if (pvrCondicion.isVariableCondicionSalida.length === 0) {
+      if (unidades.value === true) {
         $q.notify({
           type: "negative",
-          message: "Falto el Ingrese la Condicion de la Salida.",
+          message: "La unidad Tiene un PVR Abierto.",
         });
       } else {
-        $q.notify(confirm(store.getters.isData(), myAction, pvr));
+        store.dispatch("varMutuacion", { val, valor });
+
+        let pvrCondicion = JSON.parse(store.getters.isData().pvr);
+
+        const { confirm } = crud();
+
+        if (pvrCondicion.isVariableCondicionSalida.length === 0) {
+          $q.notify({
+            type: "negative",
+            message: "Falto el Ingrese la Condicion de la Salida.",
+          });
+        } else {
+          $q.notify(confirm(store.getters.isData(), myAction, Salida));
+        }
       }
     };
 
@@ -185,8 +183,6 @@ export default {
       guardar,
       label,
       buttonDisabled,
-      visibleEntrada,
-      validaEntrada,
     };
   },
 };

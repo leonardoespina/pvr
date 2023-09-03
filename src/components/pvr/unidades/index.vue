@@ -12,6 +12,7 @@
       hint="Indique Unidad"
       style="width: 250px; padding-bottom: 32px"
       @update:model-value="showChannel"
+      :rules="[required]"
     />
 
     <q-input
@@ -40,6 +41,7 @@
 import { loadList } from "../../../helper/list";
 import { ref, watchEffect } from "vue";
 import { useStore } from "vuex";
+import { required /*, contarObjeto*/ } from "../../../helper/validation";
 export default {
   setup() {
     /*  () => {
@@ -66,23 +68,14 @@ export default {
         }))
     );
     const options = ref(stringOptions.value);
-    const showChannel = (v) => {
-      loadList(`/api/vehiculo/AllId/${v.value}`, "POST").then(
-        //   (datos) => (model.value = datos.data[0])
-        (datos) => {
-          //  model.value = datos.data[0];
-          Object.assign(model.value, datos.data[0]);
-          //   let variable = { val: "isUnidad", valor: model.value };
+    const showChannel = async (v) => {
+      await loadList(`/api/vehiculo/AllId/${v.value}`, "POST").then((datos) => {
+        Object.assign(model.value, datos.data[0]);
 
-          //  let variable = { isUnidad: model.value };
+        let row = { val: "isUnidad", valor: model.value };
 
-          //      store.dispatch("varMutuacionArray", variable);
-
-          let row = { val: "isUnidad", valor: model.value };
-
-          store.dispatch("varMutuacion", row);
-        }
-      );
+        store.dispatch("varMutuacion", row);
+      });
     };
 
     return {
@@ -99,6 +92,7 @@ export default {
 
       options,
       model,
+      required,
       showChannel,
     };
   },

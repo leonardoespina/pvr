@@ -47,6 +47,27 @@ const crud = () => {
     }
   };
 
+  const login = async (payLoad) => {
+    /*  await postApi(url, options);
+    data = store.getters("data");*/
+
+    store.dispatch("login", payLoad);
+
+    /*if (data.accessToken) {
+    }*/
+  };
+
+  const token = () => {
+    let ls = localStorage;
+    let parse = JSON.parse(ls.getItem("token"));
+
+    if (parse) {
+      return parse;
+    } else {
+      false;
+    }
+  };
+
   const confirm = (data, myAction, variables) => {
     let objeto = {
       message: "Esta seguro de Realizar la Accion",
@@ -79,6 +100,8 @@ const crud = () => {
   return {
     action,
     confirm,
+    login,
+    token,
   };
 };
 

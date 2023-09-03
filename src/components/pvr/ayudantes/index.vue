@@ -49,8 +49,8 @@
 </template>
 <script>
 import { loadList } from "../../../helper/list";
-import { ref, watchEffect } from "vue";
-
+import { ref, watchEffect, inject } from "vue";
+import { required /*, contarObjeto*/ } from "../../../helper/validation";
 import Tabla from "../../pvr/ayudantes/tables.vue";
 import { column } from "../../pvr/ayudantes/column";
 import { useStore } from "vuex";
@@ -62,6 +62,7 @@ export default {
   setup() {
     const stringOptions = ref([]),
       store = useStore(),
+      isDisable = ref(true),
       col = ref(column()),
       rows = ref([]),
       ayudante = ref(null),
@@ -90,10 +91,6 @@ export default {
     });
 
     const options = ref(stringOptions.value);
-    const continuar = (v) => {
-      let variable = { val: "isStep", valor: v };
-      store.dispatch("varMutuacion", variable);
-    };
 
     const showChannel = async (val) => {
       await loadList(`/api/ayudantesCedula/${val.value}`, "GET").then(
@@ -135,7 +132,7 @@ export default {
 
       options,
       model,
-      continuar,
+      required,
       telefono,
       nombreApellido,
       showChannel,
@@ -145,6 +142,7 @@ export default {
       variable,
       cedula,
       ayudante,
+      isDisable,
     };
   },
 };

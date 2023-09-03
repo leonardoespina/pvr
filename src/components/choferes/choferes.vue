@@ -117,7 +117,7 @@ export default {
       console.log(store.getters.isAction);
 
       let data = {};
-      Object.assign(data, model.value);
+      Object.assign(data, model.value, { idUsuario: "root" });
       const { confirm } = crud();
 
       //   action(data, myAction, unidades);

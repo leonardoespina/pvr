@@ -2,9 +2,9 @@
   <div class="q-pa-md">
     <q-card class="my-card" flat bordered>
       <q-card-section class="bg-green text-white">
-        <q-btn color="green" :icon="'arrow_back'" size="sm" to="/rutas">
+        <q-btn color="green" :icon="'arrow_back'" size="sm" to="/supervisores">
           <q-tooltip> Atras</q-tooltip></q-btn
-        >Rutas
+        >Supervisores
       </q-card-section>
       <q-form ref="myForm" @submit.prevent="action">
         <q-card-actions>
@@ -12,12 +12,11 @@
             <div class="contenido">
               <q-input
                 type="text"
-                label="Ruta"
+                label="Nombre y Apellido"
                 :disable="isDisabled"
-                v-model="model.ruta"
+                v-model="model.nombreApellido"
                 lazy-rules
                 :rules="[required]"
-                autogrow
               >
                 <!---       @update:model-value="verificar(requeridLetter(model.nombreCurso))"
                 required-->
@@ -29,12 +28,13 @@
 
             <div class="contenido">
               <q-input
-                type="text"
-                label="Codigo Ruta"
+                type="number"
+                label="Cedula"
                 :disable="isDisabled"
-                v-model="model.codRuta"
+                v-model="model.cedula"
+                lazy-rules
                 :rules="[
-                  (val) => search(val, '/api/Codrutas/', ruta),
+                  (val) => search(val, '/api/supervisoresCedula/', cedula),
                   required,
                 ]"
               >
@@ -46,29 +46,20 @@
               </q-input>
             </div>
             <div class="contenido">
-              <q-select
-                v-model="model.idSupervisor"
-                :options="supervisores"
-                option-value="nombreApellido"
-                option-label="nombreApellido"
+              <q-input
+                type="text"
+                label="Telefono"
                 :disable="isDisabled"
-                emit-value
-                map-options
-                label="Supervisor de Rutas"
-              />
+                v-model="model.telefono"
+              >
+                <!---       @update:model-value="verificar(requeridLetter(model.nombreCurso))"
+                required-->
+                <template v-slot:prepend>
+                  <q-icon name="phone" color="blue" />
+                </template>
+              </q-input>
             </div>
-            <div class="contenido">
-              <q-select
-                v-model="model.idSector"
-                :options="sectores"
-                option-value="sector"
-                option-label="sector"
-                :disable="isDisabled"
-                emit-value
-                map-options
-                label="Sectores"
-              />
-            </div>
+            <div class="contenido"></div>
           </div>
         </q-card-actions>
         <q-separator />
@@ -88,11 +79,11 @@
 </template>
 <script>
 import { ref } from "vue";
-import { search, supervisores, loadList } from "../../helper/list";
+import { search, modelos, categorias } from "../../helper/list";
 //import { unidades } from "../../helper/variables";
 import { required /*, contarObjeto*/ } from "../../helper/validation";
 import crud from "../../composables/index";
-import { rutas } from "../../helper/vars";
+import { supervisores } from "../../helper/vars";
 import { useQuasar } from "quasar";
 import { useStore } from "vuex";
 export default {
@@ -102,29 +93,20 @@ export default {
     const myForm = ref(null);
     const myAction = {};
     const isDisabled = ref(false),
-      sectores = ref([]),
       buttonDisabled = ref(false),
       $q = useQuasar(),
       // store = useStore(),
       label = ref("Guardar"),
-      ruta = ref("");
+      cedula = ref("");
 
     /****VARIABLE FIJA PARA EL BUSCADOR SEARCH* */
-
-    loadList("/api/sectores/All", "POST").then(
-      (datos) => (sectores.value = datos.data)
-    );
 
     if (store.getters.isAction.data) {
       Object.assign(myAction, store.getters.isAction);
 
-      console.log(myAction);
-
-      model.value = myAction.data[0];
+      model.value = myAction.data;
       label.value = myAction.label;
-      ruta.value = myAction.data[0].codRuta;
-
-      console.log(ruta.value);
+      cedula.value = myAction.data.cedula;
 
       if (label.value != "Eliminar") {
         buttonDisabled.value = myAction.disabled;
@@ -132,20 +114,18 @@ export default {
       isDisabled.value = myAction.disabled;
     }
     const action = () => {
-      console.log(store.getters.isAction);
-
       let data = {};
       Object.assign(data, model.value, { idUsuario: "root" });
-
       const { confirm } = crud();
 
       //   action(data, myAction, unidades);
 
-      $q.notify(confirm(data, myAction, rutas));
+      $q.notify(confirm(data, myAction, supervisores));
     };
 
     return {
-      supervisores,
+      categorias,
+      modelos,
       model,
       search,
       action,
@@ -153,8 +133,7 @@ export default {
       isDisabled,
       buttonDisabled,
       required,
-      ruta,
-      sectores,
+      cedula,
       label,
     };
   },

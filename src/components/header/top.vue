@@ -43,20 +43,41 @@ export default {
     watchEffect(() => {
       /****LOADER  Y  MESSAGES****/
 
-      console.log(store.getters.isMsg);
+      //console.log(store.getters.isGetter("msg"));
 
-      if (store.getters.isMsg != null) {
+      //
+      if (store.getters.isGetter("msg") != null) {
+        $q.notify(messages(store.getters.isMsg, "positive", "close", "normal"));
+      }
+
+      if (store.getters.isGetter("isLoading") === true) {
+        $q.loading.show();
+      } else {
+        $q.loading.hide();
+      }
+    });
+
+    // console.log(store.getters.isGetter("isLoading"));
+
+    /*   if (store.getters.isGetter("isLoading") === true) {
+        $q.loading.show();
+      } else {
+        $q.loading.hide();
+        $q.notify(
+          messages(store.getters.isGetter("msg"), "positive", "close", "normal")
+        );
+      }
+
+      /*   if (store.getters.isMsg != null) {
         $q.notify(messages(store.getters.isMsg, "positive", "close", "normal"));
       }
       if (store.getters.isLoader === true) {
         $q.loading.show();
       } else {
         $q.loading.hide();
-      }
-      /***FIN****/
-    });
-
-    return {};
+      }*/
+    /***FIN****/
+    // });
   },
 };
 </script>

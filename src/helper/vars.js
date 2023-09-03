@@ -17,6 +17,20 @@ const choferes = {
   routeAdd: "/choferesAdd",
   routePrincipal: "/choferes",
 };
+const verificadores = {
+  endPointBase: "/api/verificadores/",
+  urlEndPointAll: "/api/verificadores/All",
+  FindById: "/api/verificadoresCedula/",
+  routeAdd: "/verificadoresAdd",
+  routePrincipal: "/verificadores",
+};
+const supervisores = {
+  endPointBase: "/api/supervisores/",
+  urlEndPointAll: "/api/supervisores/All",
+  FindById: "/api/supervisoresCedula/",
+  routeAdd: "/supervisoresAdd",
+  routePrincipal: "/supervisores",
+};
 const ayudantes = {
   endPointBase: "/api/ayudantes/",
   urlEndPointAll: "/api/ayudantes/All",
@@ -31,12 +45,31 @@ const rutas = {
   routePrincipal: "/rutas",
   FindById: "/api/rutas/",
 };
-const pvr = {
+
+const Salida = {
   endPointBase: "/api/salidas/",
   urlEndPointAll: "/api/salidas/All",
-  routeAdd: "/pvrAdd",
-  routePrincipal: "/pvr",
+  routeAdd: "/salidaAdd",
+  routePrincipal: "/salida",
   FindById: "/api/pvr/",
+  json: true,
+};
+const Entrada = {
+  endPointBase: "/api/salidas/",
+  urlEndPointAll: "/api/salidas/All",
+  routeAdd: "/entradaAdd",
+  consultaPvr: "/consultaPvr",
+  routePrincipal: "/entrada",
+  FindById: "/api/pvr/",
+  json: true,
+};
+const usuarios = {
+  endPointBase: "/api/users/",
+  urlEndPointAll: "/api/users/",
+  routeAdd: "/usuariosAdd",
+  routePrincipal: "/usuarios",
+  routeSecundario: "/",
+  FindById: "/api/users/",
   json: true,
 };
 
@@ -49,4 +82,16 @@ const endPoint = (url, act) => {
   };
 };
 
-export { unidades, endPoint, method, choferes, ayudantes, rutas, pvr };
+export {
+  unidades,
+  endPoint,
+  method,
+  choferes,
+  ayudantes,
+  rutas,
+  usuarios,
+  Salida,
+  supervisores,
+  verificadores,
+  Entrada,
+};

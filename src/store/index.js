@@ -6,8 +6,10 @@ const initialState = () => ({
   isLoading: false,
   isConection: false,
   msg: null,
+  status: true,
   isAction: {},
   isChofer: [],
+  isVerificador: [],
   isList: null,
   isPvr: {},
   isPvrS: [],
@@ -53,28 +55,21 @@ export default createStore({
       state.isList = val;
     },
     setMutuacion(state, { val, valor }) {
-      console.log(`Valor:${val} -- Variable:${valor} --`);
       state[val] = valor;
-      console.log(state[val]);
     },
     setMutuacionObjeto(state, valor) {
       //state[val].push(valor);
-
-      // valor;
-      //  val;
-
-      console.log(state.isPvrS.push(valor));
+      state.isPvrS.push(valor);
     },
   },
   actions: {
     async conecctionApiRest({ commit }, { url, options, urlRoute, msg }) {
-      console.log(msg);
       commit("setLoading", true);
       await apiAxios(url, options)
         .then((res) => {
           if (res.statusText === "OK") {
             //     commit("setConection", true);
-            commit("setLoading", false);
+
             commit("setMsg", msg);
             //     commit("setReset");
             useRouter.push(urlRoute);
@@ -84,10 +79,61 @@ export default createStore({
           //   commit("setConection", false);
           if (error.message === "canceled") {
             commit("setMsg", "Problemas de Conexion a la Api-Rest");
-            commit("setLoading", false);
+
             commit("setReset");
             useRouter.push(urlRoute);
           }
+        })
+        .finally(() => {
+          commit("setLoading", false);
+          commit("setReset");
+        });
+    },
+    async login({ commit }, { url, options, urlRoute }) {
+      commit("setLoading", true);
+      await apiAxios(url, options)
+        .then((res) => {
+          console.log(res);
+          if (res.data.accessToken === null) {
+            commit("setMsg", res.data.message);
+          } else {
+            // useRouter.push(urlRoute);
+            let ls = localStorage;
+            const {
+              id,
+              lastname,
+              firstname,
+              accessToken,
+              tipoUsuario,
+              ruta,
+              menu,
+              email,
+            } = res.data;
+            ls.setItem(
+              "token",
+              JSON.stringify({
+                lastname,
+                id,
+                firstname,
+                tipoUsuario,
+                accessToken,
+                ruta,
+                menu,
+                email,
+              })
+            );
+            useRouter.push(urlRoute);
+          }
+        })
+        .catch((error) => {
+          //   commit("setConection", false);
+          if (error.message === "canceled") {
+            commit("setMsg", error.message);
+          }
+        })
+        .finally(() => {
+          commit("setLoading", false);
+          commit("setReset");
         });
     },
     async action(
@@ -95,23 +141,30 @@ export default createStore({
       { url, options, msg, label, method, disabled, routeAdd, routePrincipal }
     ) {
       commit("setLoading", true);
-      await apiAxios(url, options).then((res) => {
-        console.log(res);
-        if (res.statusText === "OK") {
-          let payLoad = {
-            data: res.data,
-            msg,
-            label,
-            method,
-            disabled,
-            routePrincipal,
-            routeEndpoint: url,
-          };
+      await apiAxios(url, options)
+        .then((res) => {
+          console.log(res);
+          if (res.statusText === "OK") {
+            let payLoad = {
+              data: res.data,
+              msg,
+              label,
+              method,
+              disabled,
+              routePrincipal,
+              routeEndpoint: url,
+            };
+
+            commit("setAction", payLoad);
+            useRouter.push(routeAdd);
+          }
+        })
+        .catch((err) => {
+          commit("setMsg", err);
+        })
+        .finally(() => {
           commit("setLoading", false);
-          commit("setAction", payLoad);
-          useRouter.push(routeAdd);
-        }
-      });
+        });
 
       // commit("setAction", val);
     },
@@ -125,21 +178,26 @@ export default createStore({
       commit("setMutuacion", variable);
     },
 
-    guardarPvr() {},
-
     async loadList({ commit }, { url, options }) {
-      console.log(url, options);
+      commit("setList", []);
       commit("setLoading", true);
-      await apiAxios(url, options).then((res) => {
-        if (res.statusText === "OK") {
-          //     commit("setConection", true);
+
+      await apiAxios(url, options)
+        .then((res) => {
+          if (res.statusText === "OK") {
+            //     commit("setConection", true);
+
+            commit("setList", res.data);
+
+            //     commit("setReset");
+          }
+        })
+        .catch((err) => {
+          commit("setMsg", err);
+        })
+        .finally(() => {
           commit("setLoading", false);
-
-          commit("setList", res.data);
-
-          //     commit("setReset");
-        }
-      });
+        });
     },
   },
   getters: {
@@ -154,6 +212,7 @@ export default createStore({
     isEntrada: (state) => state.isEntrada,
     isUnidad: (state) => state.isUnidad,
     isRuta: (state) => state.isRuta,
+    status: (state) => state.status,
     isVariableCondicionSalida: (state) => state.isVariableCondicionSalida,
     isVariableCondicionEntrada: (state) => state.isVariableCondicionEntrada,
     isVariableEntrada: (state) => state.isVariableEntrada,
@@ -188,10 +247,11 @@ export default createStore({
         isUnidad: state.isUnidad,
         isRuta: state.isRuta,
         isChofer: state.isChofer,
-        varSalida: state.isVariableSalida,
-        varCondicionSalida: state.isVariableCondicionSalida,
-        varCondicionEntrada: state.isVariableCondicionEntrada,
-        varEntrada: state.isVariableEntrada,
+        isVerificador: state.isVerificador,
+        isVariableSalida: state.isVariableSalida,
+        isVariableCondicionSalida: state.isVariableCondicionSalida,
+        isVariableCondicionEntrada: state.isVariableCondicionEntrada,
+        isVariableEntrada: state.isVariableEntrada,
       };
       pvr = JSON.stringify(pvr);
 
@@ -200,7 +260,7 @@ export default createStore({
         correlativo: Date.now(),
         placa: state.isUnidad.placa,
         idUsuario: "Root",
-        status: true,
+        status: state.status,
         chofer: `Cedula: ${state.isChofer.cedula} - ${state.isChofer.nombreApellido}`,
         tipoUnidad: state.isUnidad.tipoUnidad,
         pvr,

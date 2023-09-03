@@ -23,11 +23,7 @@
           /></template>
         </q-input>
       </template>
-      <template v-slot:top-left>
-        <q-btn color="red" :icon="'add'" size="sm" @click="action(null)">{{
-          Agregar
-        }}</q-btn>
-      </template>
+
       <template v-slot:header="props">
         <q-tr :props="props">
           <q-th auto-width />
@@ -47,46 +43,22 @@
 
           <q-td auto-width>
             <q-btn
-              color="green"
-              :icon="'search'"
-              size="sm"
-              @click="
-                action(
-                  props.row.id,
-                  'GET',
-                  null,
-
-                  'Consulta',
-                  true
-                )
-              "
-            >
-              <q-tooltip> Consultar</q-tooltip></q-btn
-            >
-            <q-btn
+              v-if="props.row.status === true"
               color="red"
-              :icon="'delete'"
-              @click="
-                action(
-                  props.row.id,
-                  'DELETE',
-                  ` Registro Eliminado :${props.row.id}`,
-
-                  'Eliminar',
-                  true
-                )
-              "
-              size="sm"
-            >
-              <q-tooltip> Eliminar</q-tooltip></q-btn
-            >
-            <q-btn
-              color="blue"
-              :icon="'edit'"
+              :icon="'key'"
               size="sm"
               @click="action(props.row.id, 'PUT', null, 'Modificar', false)"
             >
-              <q-tooltip> Modificar</q-tooltip></q-btn
+              <q-tooltip> CERRAR PVR</q-tooltip></q-btn
+            >
+            <q-btn
+              v-if="props.row.status === false"
+              color="blue"
+              :icon="'search'"
+              size="sm"
+              @click="action(props.row.id, 'POST', null, 'Consulta', false)"
+            >
+              <q-tooltip> CERRAR PVR</q-tooltip></q-btn
             >
           </q-td>
         </q-tr>
@@ -121,26 +93,25 @@ export default {
 
     //console.log(endPoints(variable.urlEndPointAll, methods.POST));
 
+    /*  listas2(endPoints(variable.urlEndPointAll, methods.POST)).then((res) => {
+      console.log((rows.value = res.data));
+
+      console.log(res.data);
+    });*/
+
     let payLoad = {
       url: variable.urlEndPointAll,
       options: {
         method: methods.POST,
       },
     };
-
     store.dispatch("loadList", payLoad);
 
     watchEffect(() => {
       if (store.getters.isGetter("isList")) {
         rows.value = store.getters.isGetter("isList");
-        //console.log(rows.value);
       }
     });
-
-    /* listas2(endPoints(variable.urlEndPointAll, methods.POST)).then((res) => {
-      // console.log((rows.value = res.data));
-      res;
-    });*/
 
     const action = (id, method, msg, label, disabled) => {
       if (id === null) {
@@ -150,8 +121,13 @@ export default {
         let url = `${variable.endPointBase}${id}`;
 
         // const { create } = crud();
+        //consultaPvr
 
-        routeAdd = variable.routeAdd;
+        if (label === "Consulta") {
+          routeAdd = variable.consultaPvr;
+        } else {
+          routeAdd = variable.routeAdd;
+        }
 
         let payLoad = {
           url,

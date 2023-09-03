@@ -4,9 +4,25 @@
       <q-item clickable to="/">
         <q-item-section>Home</q-item-section>
       </q-item>
-      <q-item clickable to="/pvr">
-        <q-item-section>Pvr</q-item-section>
+
+      <q-item clickable>
+        <q-item-section>PVR</q-item-section>
+        <q-item-section side>
+          <q-icon name="keyboard_arrow_right" />
+        </q-item-section>
+
+        <q-menu anchor="top end" self="top start">
+          <q-list dense
+            ><q-item clickable to="/salida">
+              <q-item-section>Salida</q-item-section>
+            </q-item>
+            <q-item clickable to="/entrada">
+              <q-item-section>Entrada</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
       </q-item>
+
       <q-item clickable>
         <q-item-section>Configuracion</q-item-section>
         <q-item-section side>
@@ -26,6 +42,15 @@
             </q-item>
             <q-item clickable to="/rutas">
               <q-item-section>Rutas</q-item-section>
+            </q-item>
+            <q-item clickable to="/supervisores">
+              <q-item-section>Supervisores</q-item-section>
+            </q-item>
+            <q-item clickable to="/verificadores">
+              <q-item-section>Verificadores</q-item-section>
+            </q-item>
+            <q-item clickable to="/usuarios">
+              <q-item-section>Usuarios</q-item-section>
             </q-item>
           </q-list>
         </q-menu>

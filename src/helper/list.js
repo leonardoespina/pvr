@@ -68,7 +68,6 @@ listas(url, options).then((res) => {
 });
 
 const search = (val, urlEndPoint, comparaValor) => {
-  console.log(comparaValor);
   let varBusqueda = val.toString();
   if (varBusqueda != comparaValor && val != "") {
     let url = urlEndPoint,
@@ -101,6 +100,126 @@ const loadList = async (url, method) => {
   }*/
 };
 
+const listCondicionesPick = [
+  {
+    id: 1,
+    condicion: "Cauchos #1",
+  },
+  {
+    id: 2,
+    condicion: "Cauchos #2",
+  },
+  {
+    id: 3,
+    condicion: "Cauchos #3",
+  },
+  {
+    id: 4,
+    condicion: "Cauchos #4",
+  },
+
+  {
+    id: 7,
+    condicion: "Carroceria General",
+  },
+  {
+    id: 8,
+    condicion: "Faros delanteros",
+  },
+  {
+    id: 9,
+    condicion: "Luces Traseras",
+  },
+  {
+    id: 10,
+    condicion: "Parachoque",
+  },
+  {
+    id: 11,
+    condicion: "Tapa de Combustible",
+  },
+  {
+    id: 12,
+    condicion: "Espejos Retrovisores",
+  },
+  {
+    id: 13,
+    condicion: "Extintor",
+  },
+  {
+    id: 14,
+    condicion: "Triangulo de Seguridad",
+  },
+];
+
+const listCondicionesCompactadora = [
+  {
+    id: 1,
+    condicion: "Cauchos #1",
+  },
+  {
+    id: 2,
+    condicion: "Cauchos #2",
+  },
+  {
+    id: 3,
+    condicion: "Cauchos #3",
+  },
+  {
+    id: 4,
+    condicion: "Cauchos #4",
+  },
+  {
+    id: 5,
+    condicion: "Cauchos #5",
+  },
+  {
+    id: 6,
+    condicion: "Cauchos #6",
+  },
+
+  {
+    id: 7,
+    condicion: "Carroceria General",
+  },
+  {
+    id: 8,
+    condicion: "Faros delanteros",
+  },
+  {
+    id: 9,
+    condicion: "Luces Traseras",
+  },
+  {
+    id: 10,
+    condicion: "Parachoque",
+  },
+  {
+    id: 11,
+    condicion: "Tapa de Combustible",
+  },
+  {
+    id: 12,
+    condicion: "Espejos Retrovisores",
+  },
+  {
+    id: 13,
+    condicion: "Extintor",
+  },
+  {
+    id: 14,
+    condicion: "Triangulo de Seguridad",
+  },
+];
+
+const listaCondiciones = (tipoUnidad) => {
+  if (tipoUnidad === "COMPACTADORA") {
+    return listCondicionesCompactadora;
+  } else {
+    return listCondicionesPick;
+  }
+};
+
 export {
   categorias,
   modelos,
@@ -109,6 +228,7 @@ export {
   search,
   listas2,
   listas,
+  listaCondiciones,
   unidades,
   loadList,
 };

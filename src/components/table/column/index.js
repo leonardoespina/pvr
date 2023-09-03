@@ -24,20 +24,13 @@ const col = [
     field: (row) => row.categoria.categorias,
     sortable: true,
   },
-  {
-    name: "Estado",
-    required: true,
-    label: "Estado",
-    align: "left",
-    field: (row) => row.tipofalla.fallas,
-    sortable: true,
-  },
+
   {
     name: "Usuario",
     required: true,
     label: "Usuario",
     align: "left",
-    field: (row) => `${row.user.firstname},${row.user.lastname}`,
+    field: (row) => row.idUser,
     sortable: true,
   },
 
@@ -46,7 +39,7 @@ const col = [
     required: true,
     label: "Fecha de Creacion",
     align: "left",
-    field: (row) => row.createdAt,
+    field: (row) => new Date(row.createdAt).toLocaleString(),
     sortable: true,
   },
 ];
@@ -96,13 +89,112 @@ const colChoferes = [
     required: true,
     label: "Fecha de Creacion",
     align: "left",
-    field: (row) => row.createdAt,
+    field: (row) => new Date(row.createdAt).toLocaleString(),
     sortable: true,
   },
 ];
 
 export function columnChoferes() {
   return colChoferes;
+}
+const colUsuarios = [
+  // column Object definition
+  {
+    name: "nombreApellido",
+    required: true,
+    label: "Nombre y Apellido",
+    align: "left",
+    field: (row) => row.firstname,
+    sortable: true,
+  },
+  {
+    name: "apelllido",
+    required: true,
+    label: "Apellido",
+    align: "left",
+    field: (row) => row.lastname,
+    sortable: true,
+  },
+  {
+    name: "Usuario",
+    required: true,
+    label: "Usuario",
+    align: "left",
+    field: (row) => row.email,
+    sortable: true,
+  },
+
+  {
+    name: "Cedula",
+    required: true,
+    label: "Cedula",
+    align: "left",
+    field: (row) => row.cedula,
+    sortable: true,
+  },
+
+  {
+    name: "Fechacreacion",
+    required: true,
+    label: "Fecha de Creacion",
+    align: "left",
+    field: (row) => new Date(row.createdAt).toLocaleString(),
+    sortable: true,
+  },
+];
+
+export function columnUsuarios() {
+  return colUsuarios;
+}
+
+const colVerificadores = [
+  // column Object definition
+  {
+    name: "nombreApellido",
+    required: true,
+    label: "Nombre y Apellido",
+    align: "left",
+    field: (row) => row.nombreApellido,
+    sortable: true,
+  },
+  {
+    name: "Cedula",
+    required: true,
+    label: "Cedula de identidad",
+    align: "left",
+    field: (row) => row.cedula,
+    sortable: true,
+  },
+  {
+    name: "telefono",
+    required: true,
+    label: "Telefono",
+    align: "left",
+    field: (row) => row.telefono,
+    sortable: true,
+  },
+
+  {
+    name: "Usuario",
+    required: true,
+    label: "Usuario",
+    align: "left",
+    field: (row) => row.idUsuario,
+    sortable: true,
+  },
+
+  {
+    name: "Fechacreacion",
+    required: true,
+    label: "Fecha de Creacion",
+    align: "left",
+    field: (row) => new Date(row.createdAt).toLocaleString(),
+    sortable: true,
+  },
+];
+
+export function columnVerificadores() {
+  return colVerificadores;
 }
 
 const ayudantes = [
@@ -146,7 +238,7 @@ const ayudantes = [
     required: true,
     label: "Fecha de Creacion",
     align: "left",
-    field: (row) => row.createdAt,
+    field: (row) => new Date(row.createdAt).toLocaleString(),
     sortable: true,
   },
 ];
@@ -178,7 +270,7 @@ const rutas = [
     required: true,
     label: "Supervisor",
     align: "left",
-    field: (row) => row.supervisore.nombreApellido,
+    field: (row) => row.idSupervisor,
     sortable: true,
   },
 
@@ -196,7 +288,7 @@ const rutas = [
     required: true,
     label: "Fecha de Creacion",
     align: "left",
-    field: (row) => row.createdAt,
+    field: (row) => new Date(row.createdAt).toLocaleString(),
     sortable: true,
   },
 ];
@@ -260,15 +352,15 @@ const colPvr = [
     required: true,
     label: "Fecha de Creacion",
     align: "left",
-    field: (row) => row.createdAt,
+    field: (row) => new Date(row.createdAt).toLocaleString(),
     sortable: true,
   },
   {
     name: "ESTATUS",
     required: true,
-    label: "ESTATUS",
+    label: "ESTATUS PVR",
     align: "left",
-    field: (row) => (row.pvrSalida === "" ? "ABIERTO " : "CERRADO"),
+    field: (row) => (row.status === true ? "ABIERTO" : "CERRADO"),
     sortable: true,
   },
 ];
@@ -308,4 +400,53 @@ const colCondicion = [
 ];
 export function columnCondicion() {
   return colCondicion;
+}
+const colSupervisores = [
+  // column Object definition
+  {
+    name: "nombreApellido",
+    required: true,
+    label: "Nombre y Apellido",
+    align: "left",
+    field: (row) => row.nombreApellido,
+    sortable: true,
+  },
+  {
+    name: "Cedula",
+    required: true,
+    label: "Cedula de identidad",
+    align: "left",
+    field: (row) => row.cedula,
+    sortable: true,
+  },
+  {
+    name: "telefono",
+    required: true,
+    label: "Telefono",
+    align: "left",
+    field: (row) => row.telefono,
+    sortable: true,
+  },
+
+  {
+    name: "Usuario",
+    required: true,
+    label: "Usuario",
+    align: "left",
+    field: (row) => row.idUsuario,
+    sortable: true,
+  },
+
+  {
+    name: "Fechacreacion",
+    required: true,
+    label: "Fecha de Creacion",
+    align: "left",
+    field: (row) => new Date(row.createdAt).toLocaleString(),
+    sortable: true,
+  },
+];
+
+export function columnSupervisores() {
+  return colSupervisores;
 }

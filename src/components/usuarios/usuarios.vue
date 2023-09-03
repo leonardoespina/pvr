@@ -2,9 +2,9 @@
   <div class="q-pa-md">
     <q-card class="my-card" flat bordered>
       <q-card-section class="bg-green text-white">
-        <q-btn color="green" :icon="'arrow_back'" size="sm" to="/rutas">
+        <q-btn color="green" :icon="'arrow_back'" size="sm" to="/usuarios">
           <q-tooltip> Atras</q-tooltip></q-btn
-        >Rutas
+        >Usuarios
       </q-card-section>
       <q-form ref="myForm" @submit.prevent="action">
         <q-card-actions>
@@ -12,12 +12,27 @@
             <div class="contenido">
               <q-input
                 type="text"
-                label="Ruta"
+                label="Nombre "
                 :disable="isDisabled"
-                v-model="model.ruta"
+                v-model="model.firstname"
                 lazy-rules
                 :rules="[required]"
-                autogrow
+              >
+                <!---       @update:model-value="verificar(requeridLetter(model.nombreCurso))"
+                required-->
+                <template v-slot:prepend>
+                  <q-icon name="card_membership" color="blue" />
+                </template>
+              </q-input>
+            </div>
+            <div class="contenido">
+              <q-input
+                type="text"
+                label="Apellido "
+                :disable="isDisabled"
+                v-model="model.lastname"
+                lazy-rules
+                :rules="[required]"
               >
                 <!---       @update:model-value="verificar(requeridLetter(model.nombreCurso))"
                 required-->
@@ -29,46 +44,69 @@
 
             <div class="contenido">
               <q-input
-                type="text"
-                label="Codigo Ruta"
+                type="number"
+                label="Cedula"
                 :disable="isDisabled"
-                v-model="model.codRuta"
+                v-model="model.cedula"
+                lazy-rules
                 :rules="[
-                  (val) => search(val, '/api/Codrutas/', ruta),
+                  (val) => search(val, '/api/usersCedula/', cedula),
                   required,
                 ]"
               >
-                <!---       @update:model-value="verificar(requeridLetter(model.nombreCurso))"
-                required-->
+                <template v-slot:prepend>
+                  <q-icon name="person_add" color="blue" />
+                </template>
+              </q-input>
+            </div>
+
+            <div class="contenido">
+              <q-input
+                type="text"
+                label="Login"
+                :disable="isDisabled"
+                v-model="model.email"
+                lazy-rules
+                :rules="[
+                  (val) => search(val, '/api/usersUser/', user),
+                  required,
+                ]"
+              >
                 <template v-slot:prepend>
                   <q-icon name="person_add" color="blue" />
                 </template>
               </q-input>
             </div>
             <div class="contenido">
-              <q-select
-                v-model="model.idSupervisor"
-                :options="supervisores"
-                option-value="nombreApellido"
-                option-label="nombreApellido"
+              <q-input
+                type="text"
+                label="Password"
                 :disable="isDisabled"
-                emit-value
-                map-options
-                label="Supervisor de Rutas"
-              />
+                v-model="model.password"
+                lazy-rules
+                :rules="[required]"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="person_add" color="blue" />
+                </template>
+              </q-input>
             </div>
             <div class="contenido">
-              <q-select
-                v-model="model.idSector"
-                :options="sectores"
-                option-value="sector"
-                option-label="sector"
+              <q-input
+                type="text"
+                label="Repita Password"
                 :disable="isDisabled"
-                emit-value
-                map-options
-                label="Sectores"
-              />
+                v-model="model.password1"
+                lazy-rules
+                :rules="[required]"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="person_add" color="blue" />
+                </template>
+              </q-input>
             </div>
+
+            <div class="contenido"></div>
           </div>
         </q-card-actions>
         <q-separator />
@@ -88,11 +126,11 @@
 </template>
 <script>
 import { ref } from "vue";
-import { search, supervisores, loadList } from "../../helper/list";
+import { search, modelos, categorias } from "../../helper/list";
 //import { unidades } from "../../helper/variables";
 import { required /*, contarObjeto*/ } from "../../helper/validation";
 import crud from "../../composables/index";
-import { rutas } from "../../helper/vars";
+import { usuarios } from "../../helper/vars";
 import { useQuasar } from "quasar";
 import { useStore } from "vuex";
 export default {
@@ -102,29 +140,24 @@ export default {
     const myForm = ref(null);
     const myAction = {};
     const isDisabled = ref(false),
-      sectores = ref([]),
       buttonDisabled = ref(false),
       $q = useQuasar(),
       // store = useStore(),
       label = ref("Guardar"),
-      ruta = ref("");
+      cedula = ref(""),
+      user = ref("");
 
     /****VARIABLE FIJA PARA EL BUSCADOR SEARCH* */
-
-    loadList("/api/sectores/All", "POST").then(
-      (datos) => (sectores.value = datos.data)
-    );
 
     if (store.getters.isAction.data) {
       Object.assign(myAction, store.getters.isAction);
 
-      console.log(myAction);
+      console.table(store.getters.isAction);
 
-      model.value = myAction.data[0];
+      model.value = myAction.data;
       label.value = myAction.label;
-      ruta.value = myAction.data[0].codRuta;
-
-      console.log(ruta.value);
+      cedula.value = myAction.data.cedula;
+      user.value = myAction.data.email;
 
       if (label.value != "Eliminar") {
         buttonDisabled.value = myAction.disabled;
@@ -132,20 +165,18 @@ export default {
       isDisabled.value = myAction.disabled;
     }
     const action = () => {
-      console.log(store.getters.isAction);
-
       let data = {};
       Object.assign(data, model.value, { idUsuario: "root" });
-
       const { confirm } = crud();
 
       //   action(data, myAction, unidades);
 
-      $q.notify(confirm(data, myAction, rutas));
+      $q.notify(confirm(data, myAction, usuarios));
     };
 
     return {
-      supervisores,
+      categorias,
+      modelos,
       model,
       search,
       action,
@@ -153,8 +184,8 @@ export default {
       isDisabled,
       buttonDisabled,
       required,
-      ruta,
-      sectores,
+      cedula,
+      user,
       label,
     };
   },

@@ -54,23 +54,32 @@
 </template>
 <script>
 import { ref } from "vue";
-//import api from "../../composable/crud";
+import crud from "../../composables/index";
+import Top from "../../components/header/top.vue";
+import { usuarios } from "../../helper/vars";
+
 export default {
+  components: {
+    Top,
+  },
   setup() {
     const model = ref([]);
     let objeto = {};
     const onSubmit = () => {
       Object.assign(objeto, model.value);
 
-      let url = "/api/user/signin",
-        options = {
+      let { login } = crud();
+
+      let payLoad = {
+        urlRoute: usuarios.routeSecundario,
+        url: "/api/user/signin",
+        options: {
           method: "POST",
           data: objeto,
-        };
+        },
+      };
 
-      //login(url, options);
-
-      url;
+      login(payLoad);
     };
     return { onSubmit, model };
   },

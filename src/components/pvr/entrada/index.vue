@@ -1,7 +1,7 @@
 <template>
   <div>
     <Table
-      :variables="Salida"
+      :variables="Entrada"
       :endPoint="endPoint"
       :method="method"
       :col="columnPvr"
@@ -10,15 +10,15 @@
 </template>
 <script>
 //import { ref } from "vue";
-import Table from "../../table/indexSalida.vue";
-import { Salida, endPoint, method } from "../../../helper/vars";
+import Table from "../../table/indexEntrada.vue";
+import { Entrada, endPoint, method } from "../../../helper/vars";
 import { columnPvr } from "../../table/column/index";
 export default {
   components: {
     Table,
   },
   setup() {
-    return { Salida, endPoint, method, columnPvr };
+    return { Entrada, endPoint, method, columnPvr };
   },
 };
 </script>

@@ -12,6 +12,7 @@
       hint="Indique Codigo Ruta"
       style="width: 150px; padding-bottom: 32px"
       @update:model-value="showChannel"
+      :rules="[required]"
     />
     <q-input
       v-model="model.ruta"
@@ -22,7 +23,7 @@
       autogrow
     />
     <q-input
-      v-model="model.supervisor"
+      v-model="model.idSupervisor"
       type="text"
       readonly
       label="Supervisor"
@@ -30,7 +31,7 @@
     >
     </q-input>
     <q-input
-      v-model="model.sectores"
+      v-model="model.idSector"
       type="text"
       readonly
       label="Sector"
@@ -45,6 +46,7 @@ import { ref, watchEffect } from "vue";
 
 import { column } from "../../pvr/ayudantes/column";
 import { useStore } from "vuex";
+import { required /*, contarObjeto*/ } from "../../../helper/validation";
 export default {
   components: {},
 
@@ -55,6 +57,7 @@ export default {
       rows = ref([]),
       cedula = ref([]),
       telefono = ref(null),
+      isDisable = ref(true),
       nombreApellido = ref(null),
       variable = "isListAyudante",
       model = ref([]);
@@ -108,9 +111,10 @@ export default {
       showChannel,
       col,
       rows,
-
+      required,
       variable,
       cedula,
+      isDisable,
     };
   },
 };

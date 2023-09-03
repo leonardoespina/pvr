@@ -1,39 +1,45 @@
 <template>
-  <div class="q-gutter-md row items-start">
-    <q-select
-      filled
-      v-model="model"
-      use-input
-      hide-selected
-      fill-input
-      input-debounce="0"
-      :options="options"
-      @filter="filterFn"
-      hint="Indique Cedula"
-      style="width: 250px; padding-bottom: 32px"
-      @update:model-value="showChannel"
-      :rules="[required]"
-    />
-    <q-input
-      v-model="model.nombreApellido"
-      readonly="readonly"
-      type="text"
-      label="Nombre"
-      style="width: 100px"
-    />
-    <q-input
-      v-model="model.telefono"
-      readonly="readonly"
-      type="text"
-      label="Telefono"
-      style="width: 100px"
-    />
+  <div class="q-pa-md">
+    <q-card class="my-card" flat bordered>
+      <div class="text-h6 q-mb-xs">Datos del Verificador</div>
+      <q-separator />
+      <div class="q-gutter-md row items-start">
+        <q-select
+          filled
+          v-model="model"
+          use-input
+          hide-selected
+          fill-input
+          input-debounce="0"
+          :options="options"
+          @filter="filterFn"
+          hint="Indique Cedula"
+          style="width: 250px; padding-bottom: 32px"
+          @update:model-value="showChannel"
+          :rules="[required]"
+        />
+        <q-input
+          v-model="model.nombreApellido"
+          readonly="readonly"
+          type="text"
+          label="Nombre"
+          style="width: 100px"
+        />
+        <q-input
+          v-model="model.telefono"
+          readonly="readonly"
+          type="text"
+          label="Telefono"
+          style="width: 100px"
+        />
+      </div>
+    </q-card>
   </div>
 </template>
 <script>
 import { loadList } from "../../../helper/list";
 import { required /*, contarObjeto*/ } from "../../../helper/validation";
-import { ref } from "vue";
+import { ref, inject } from "vue";
 
 import { useStore } from "vuex";
 export default {
@@ -44,10 +50,10 @@ export default {
       model = ref([]);
 
     if (store.getters.isAction.data) {
-      model.value = store.getters.isGetter("isChofer");
+      model.value = store.getters.isGetter("isVerificador");
     }
 
-    loadList("/api/choferes/All", "POST").then(
+    loadList("/api/verificadores/All", "POST").then(
       (datos) =>
         (stringOptions.value = datos.data.map(function (ele) {
           return {
@@ -61,7 +67,7 @@ export default {
     const showChannel = async (val) => {
       console.log(val);
 
-      await loadList(`/api/choferesCedula/${val.value}`, "GET").then(
+      await loadList(`/api/verificadoresCedula/${val.value}`, "GET").then(
         (datos) => {
           /*  model.value = datos.data[0];
           let variable = { val: "isChofer", valor: model.value };
@@ -69,7 +75,7 @@ export default {
 
           Object.assign(model.value, datos.data[0]);
 
-          let variable = { val: "isChofer", valor: model.value };
+          let variable = { val: "isVerificador", valor: model.value };
           store.dispatch("varMutuacion", variable);
 
           //   let variable = { isChofer: model.value };

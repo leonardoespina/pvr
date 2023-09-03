@@ -3,14 +3,42 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import home from "../views/home";
 import login from "../views/login";
+import Found from "../components/found.vue";
 //import top from "../components/header/top.vue";
-
+let sessionStorage;
 /** inicio del router */
+
+function guardMyroute(to, from, next) {
+  console.log(to.matched[0].name);
+  sessionStorage = JSON.parse(localStorage.getItem("token"));
+  const { meta } = to;
+  //let { tipoUsuario } = sessionStorage;
+
+  if (sessionStorage) {
+    /*********AQUI PODRIA VALIDAR EL ACCESO CON LA API X SEGURIDAD ******/
+    next();
+  } else {
+    next({ name: "login" });
+  }
+}
+
+async function guardMyrouteLogin(to, from, next) {
+  sessionStorage = JSON.parse(localStorage.getItem("token"));
+  if (to.name === "login") {
+    if (!sessionStorage) {
+      next();
+    } else {
+      next({ name: "home" });
+    }
+  }
+}
+
 const routes = [
   {
     path: "/",
     name: "home",
     component: home,
+    beforeEnter: guardMyroute,
 
     children: [
       {
@@ -27,18 +55,36 @@ const routes = [
         component: () => import("../components/unidades/unidades.vue"),
       },
       {
-        path: "/pvr/",
-        name: "pvr",
+        path: "/salida",
+        name: "salida",
 
-        component: () => import("../components/pvr/index.vue"),
+        component: () => import("../components/pvr/salida/index.vue"),
       },
-
       {
-        path: "/pvrAdd",
-        name: "pvrAdd",
+        path: "/salidaAdd",
+        name: "salidaAdd",
 
-        component: () => import("../components/pvr/pvr.vue"),
+        component: () => import("../components/pvr/salida/salidaAdd.vue"),
       },
+      {
+        path: "/entrada",
+        name: "entrada",
+
+        component: () => import("../components/pvr/entrada/index.vue"),
+      },
+      {
+        path: "/entradaAdd",
+        name: "entradaAdd",
+
+        component: () => import("../components/pvr/entrada/entradaAdd.vue"),
+      },
+      {
+        path: "/consultaPvr",
+        name: "consultaPvr",
+
+        component: () => import("../components/pvr/entrada/consultaPvr.vue"),
+      },
+
       {
         path: "/choferes/",
         name: "choferes",
@@ -52,6 +98,39 @@ const routes = [
 
         component: () => import("../components/choferes/choferes.vue"),
       },
+
+      {
+        path: "/verificadores/",
+        name: "verificadores",
+
+        component: () => import("../components/verificadores/index.vue"),
+      },
+
+      {
+        path: "/verificadoresAdd",
+        name: "verificadoresAdd",
+
+        component: () =>
+          import("../components/verificadores/verificadores.vue"),
+      },
+      /////
+
+      {
+        path: "/supervisores/",
+        name: "supervisores",
+
+        component: () => import("../components/supervisores/index.vue"),
+      },
+
+      {
+        path: "/supervisoresAdd",
+        name: "supervisoresAdd",
+
+        component: () => import("../components/supervisores/supervisores.vue"),
+      },
+
+      ////
+
       {
         path: "/ayudantes/",
         name: "ayudantes",
@@ -78,12 +157,30 @@ const routes = [
 
         component: () => import("../components/rutas/rutas.vue"),
       },
+      {
+        path: "/usuarios/",
+        name: "user",
+
+        component: () => import("../components/usuarios/index.vue"),
+      },
+
+      {
+        path: "/usuariosAdd",
+        name: "userAdd",
+
+        component: () => import("../components/usuarios/usuarios.vue"),
+      },
     ],
   },
   {
     path: "/login",
     name: "login",
     component: login,
+    beforeEnter: guardMyrouteLogin,
+  },
+  {
+    path: "/:notFound",
+    component: Found,
   },
 ];
 

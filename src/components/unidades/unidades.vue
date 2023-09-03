@@ -17,7 +17,7 @@
                 lazy-rules
                 :disable="isDisabled"
                 :rules="[
-                  (val) => search(val, '/api/vehiculoPlaca/', model.unidad),
+                  (val) => search(val, '/api/vehiculoUnidad/', Unidad),
                   required,
                 ]"
               >
@@ -114,6 +114,7 @@ export default {
       $q = useQuasar(),
       // store = useStore(),
       label = ref("Guardar"),
+      Unidad = ref(""),
       placa = ref("");
 
     /****VARIABLE FIJA PARA EL BUSCADOR SEARCH* */
@@ -123,6 +124,7 @@ export default {
       model.value = myAction.data;
       label.value = myAction.label;
       placa.value = myAction.data.placa;
+      Unidad.value = myAction.data.unidad;
 
       if (label.value != "Eliminar") {
         buttonDisabled.value = myAction.disabled;
@@ -133,7 +135,7 @@ export default {
       console.log(store.getters.isAction);
 
       let data = {};
-      Object.assign(data, model.value);
+      Object.assign(data, model.value, { idUser: "root" });
       const { confirm } = crud();
 
       //   action(data, myAction, unidades);
@@ -152,6 +154,7 @@ export default {
       buttonDisabled,
       required,
       placa,
+      Unidad,
       label,
     };
   },

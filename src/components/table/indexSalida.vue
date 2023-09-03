@@ -65,6 +65,7 @@
             >
             <q-btn
               color="red"
+              v-if="props.row.status === true"
               :icon="'delete'"
               @click="
                 action(
@@ -73,7 +74,7 @@
                   ` Registro Eliminado :${props.row.id}`,
 
                   'Eliminar',
-                  true
+                  false
                 )
               "
               size="sm"
@@ -82,6 +83,7 @@
             >
             <q-btn
               color="blue"
+              v-if="props.row.status === true"
               :icon="'edit'"
               size="sm"
               @click="action(props.row.id, 'PUT', null, 'Modificar', false)"
@@ -121,26 +123,23 @@ export default {
 
     //console.log(endPoints(variable.urlEndPointAll, methods.POST));
 
+    /*   listas2(endPoints(variable.urlEndPointAll, methods.POST)).then((res) => {
+      // rows.value = res.data;
+    });*/
+
     let payLoad = {
       url: variable.urlEndPointAll,
       options: {
         method: methods.POST,
       },
     };
-
     store.dispatch("loadList", payLoad);
 
     watchEffect(() => {
       if (store.getters.isGetter("isList")) {
         rows.value = store.getters.isGetter("isList");
-        //console.log(rows.value);
       }
     });
-
-    /* listas2(endPoints(variable.urlEndPointAll, methods.POST)).then((res) => {
-      // console.log((rows.value = res.data));
-      res;
-    });*/
 
     const action = (id, method, msg, label, disabled) => {
       if (id === null) {
@@ -167,7 +166,6 @@ export default {
         };
 
         //routePrincipal: "/unidades"
-        console.log(payLoad);
 
         store.dispatch("action", payLoad);
       }
